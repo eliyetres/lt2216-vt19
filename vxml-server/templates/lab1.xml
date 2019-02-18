@@ -1,57 +1,88 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<vxml version="2.1" xmlns="http://www.w3.org/2001/vxml"
-      xmlns:voxeo="http://community.voxeo.com/xmlns/vxml">
-  <nomatch>
-    I didn't understand.
-    <reprompt/>
-  </nomatch>
-  
-  <noinput>
-    You didn't say anything.
-    <reprompt/>
-  </noinput>
-
-  <!-- Data model -->
-  <var name="from" />
-  <var name="to" />
-
-  <!-- State machine -->
-  <form id="welcome">
-    <block>
-      <prompt>
-        <break time="2000" />
-        Welcome to the flight booking service.
-      </prompt>
-      <goto next="#askFrom" />
-    </block>
-  </form>
-
-  <form id="askFrom">
-    <field name="fromField">
-      <prompt>
-        What city are you leaving from?
-      </prompt>
-      <option>london</option>
-      <option>paris</option>
-      <option>new york</option>
-    </field>
-    <filled>
-      <assign name="from" expr="fromField" />
-      <goto next="#askTo" />
-    </filled>
-  </form>
-
-  <form id="askTo">
-    <field name="toField">
-      <prompt>
-        Where are you going?
-      </prompt>
-      <option>london</option>
-      <option>paris</option>
-      <option>new york</option>
-    </field>
-    <filled>
-      <goto next="#askDate" />
-    </filled>
-  </form>
-</vxml>
+<vxml version="2.1"
+    xmlns="http://www.w3.org/2001/vxml"
+    xmlns:voxeo="http://community.voxeo.com/xmlns/vxml">
+    <nomatch>    I didn't understand.            
+        <reprompt/>
+    </nomatch>
+    <noinput>    You didn't say anything.            
+        <reprompt/>
+    </noinput>
+    <!-- Data model -->
+    <var name="from" />
+    <var name="to" />
+    <var name="date" />
+    <var name="return" />
+    <!-- State machine -->
+    <form id="welcome">
+        <block>
+            <prompt>
+                <break time="2000" />        Welcome to the flight booking service.                  
+            </prompt>
+            <goto next="#askFrom" />
+        </block>
+    </form>
+    <!-- LEaving from -->
+    <form id="askFrom">
+        <field name="fromField">
+            <prompt>        What city are you leaving from?  The options are: London, Paris or New York.     </prompt>
+            <option>london</option>
+            <option>paris</option>
+            <option>new york</option>
+        </field>
+        <filled>
+            <assign name="from" expr="fromField" />
+            <goto next="#askTo" />
+        </filled>
+    </form>
+    <!-- Goint to  -->
+    <form id="askTo">
+        <field name="toField">
+            <prompt>        Where are you going?  The options are: London, Paris or New York.    </prompt>
+            <option>london</option>
+            <option>paris</option>
+            <option>new york</option>
+        </field>
+        <filled>
+        <assign name="to" expr="toField" />
+         <!-- Error if from and to dates are the same  -->
+            <goto next="#askDate" />
+        </filled>
+    </form>
+    <!-- Select date -->
+    <form id="askDate">
+        <field name="toField">
+            <prompt>        Is it a one-way trip?      </prompt>
+            <option>Yes</option>
+            <option>No</option>
+        </field>
+        <filled>
+            <goto next="#wayTrip" />
+        </filled>
+    </form>
+    <!-- If YES for one way trip -->
+    <form id="askOneWay">
+        <field name="toField">
+            <prompt>        Do you want to do                 
+                <FROM> to                     
+                    <TO> om                         
+                        <DATE>?                                      
+                            <option>Yes</option>
+                            <option>No</option>
+                        </prompt>
+                    </field>
+                    <filled>
+                        <goto next="#wayTrip" />
+                    </filled>
+                </form>
+                <!-- If NO for one way trip -->
+                <form id="wayTrip">
+                    <field name="returnOn">
+                        <prompt>        What date do you want to return?                        </prompt>
+                    </field>
+                    <filled>
+                        <assign name="date" expr="returnOn" />
+                        <!-- <goto next="#wayTrip" /> -->
+                    </filled>
+                </form>
+            </vxml>
