@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vxml version="2.1" xmlns="http://www.w3.org/2001/vxml" xmlns:voxeo="http://community.voxeo.com/xmlns/vxml">
+    <nomatch>I didn't understand.<reprompt />
+    </nomatch>
+    <noinput>You didn't say anything.<reprompt />
+    </noinput>
+    <!-- Menu -->
+    <menu id="mainmenu">
+        <prompt>
+            <break time="2000" />Welcome to the flight booking service. Do you want to <enumerate />
+        </prompt>
+        <choice next="lab1_booking#askFrom"> Book </choice>
+        <choice next="lab1_delayed#askDelayed"> Check delayed </choice>
+    </menu>
+</vxml>

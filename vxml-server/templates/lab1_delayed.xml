@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vxml version="2.1" xmlns="http://www.w3.org/2001/vxml" xmlns:voxeo="http://community.voxeo.com/xmlns/vxml" application="lab1.xml">
+    <!-- Delayed flights -->
+    <form id="askDelayed">
+        <block>
+                All flights are on time.
+                <goto next="lab1#mainmenu" />
+        </block>
+    </form>
+</vxml>

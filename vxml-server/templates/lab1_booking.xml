@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<vxml version="2.1" xmlns="http://www.w3.org/2001/vxml" xmlns:voxeo="http://community.voxeo.com/xmlns/vxml">
+<vxml version="2.1" xmlns="http://www.w3.org/2001/vxml" xmlns:voxeo="http://community.voxeo.com/xmlns/vxml" application="lab1.xml">
     <nomatch>I didn't understand.<reprompt />
     </nomatch>
     <noinput>You didn't say anything.<reprompt />
@@ -10,21 +10,6 @@
     <var name="returnTo" />
     <var name="oneway" />
     <var name="confirm" />
-    <!-- Menu -->
-    <menu id="mainmenu">
-        <prompt>
-            <break time="2000" />Welcome to the flight booking service. Do you want to <enumerate />
-        </prompt>
-        <choice next="#askFrom"> Book </choice>
-        <choice next="#askDelayed"> Check delayed </choice>
-    </menu>
-    <!-- Delayed flights -->
-    <form id="askDelayed">
-        <block>
-                All flights are on time.
-                <goto next="#mainmenu" />
-        </block>
-    </form>
     <!-- Leaving from -->
     <form id="askFrom">
         <field name="fromField">
@@ -45,7 +30,9 @@
     <!-- Going to  -->
     <form id="askTo">
         <field name="toField">
-            <prompt bargein="false"><break time="8000" />Where are you travelling to?
+            <prompt bargein="false">
+                <break time="8000" />Where are you travelling to?
+            
             </prompt>
             <noinput>The options are: London, Paris or New York.<reprompt />
             </noinput>
@@ -58,7 +45,7 @@
             <!-- Error if from and to dates are the same, start over  -->
             <if cond="from == to ">
                 <prompt bargein="false">I'm sorry, you can't leave and return to the same city.</prompt>
-                <clear namelist="to"/>
+                <clear namelist="to" />
                 <goto next="#askTo" />
             </if>
             <goto next="#askDate" />
@@ -81,7 +68,12 @@
     </form> <!-- If YES for one way trip -->
     <form id="askOneWay">
         <field name="oneWayField">
-            <prompt bargein="false">Do you want to travel from <value expr="from" />?</prompt>
+            <prompt bargein="false">Do you want to travel from <value expr="from" />?
+            
+            
+            
+            
+            </prompt>
             <option>yes</option>
             <option>no</option>
         </field>
@@ -119,12 +111,13 @@
     <!-- Booking complete -->
     <form id="askConfirmOne">
         <block>Your flight has been booked! You're travelling from <value expr="from" />.
-            <goto next="#mainmenu" />
+            <goto next="lab1#mainmenu" />
         </block>
     </form>
     <form id="askConfirmTwo">
-        <block>Your flight has been booked! You're travelling from <value expr="from" />to<value expr="to" />on<value expr="date" />.            
-            <goto next="#mainmenu" />
+        <block>Your flight has been booked! You're travelling from <value expr="from" />to<value expr="to" />on<value expr="date" />.
+            
+            <goto next="lab1#mainmenu" />
         </block>
     </form>
 </vxml>

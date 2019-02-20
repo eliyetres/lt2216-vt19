@@ -1,7 +1,11 @@
-* How to run web server
-In your shell:
+* Dialogue Systems: Lab 1
+
+** Part A
+** Part B
+** Part C
+
 #+BEGIN_SRC sh
 export FLASK_APP=app.py
 export FLASK_ENV=development
-flask run --port 8099
+flask run --port 8071
 #+END_SRC
