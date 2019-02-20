@@ -7,36 +7,38 @@
     <var name="from" />
     <var name="to" />
     <var name="date" />
-    <var name="returnTo" /> <!-- Menu -->
-    <menu>
-        <prompt>Welcome to the flight booking service. Would you like to book a flight or get information about delayed flights? Say one of: <enumerate />
+    <var name="returnTo" />
+    <var name="oneway" />
+    <var name="confirm" />
+    <!-- Menu -->
+    <menu id="mainmenu">
+        <prompt>
+            <break time="2000" />Welcome to the bullshit booking service. Do you want to <enumerate />
         </prompt>
-        <choice next="#welcome">Book</choice>
-        <choice next="#delayedFlights">Delayed</choice>
-    </menu> <!-- Delayed flights -->
-    <form id="delayedFlights">
-        <field name="delayedFlightsForm">
-            <prompt>
-                <noinput>All flights are on time.</noinput>
-            </prompt>
-        </field>
-    </form>
-    <!-- State machine -->
-    <form id="welcome">
+        <choice next="#askFrom"> Book </choice>
+        <choice next="#askDelayed"> Check delayed </choice>
+    </menu>
+    <!-- Delayed flights -->
+    <form id="askDelayed">
         <block>
-            <prompt>
-                <break time="2000" />Welcome to the flight booking service.</prompt>
-            <goto next="#askFrom" />
+                All flights are on time.
+                <goto next="#mainmenu" />
         </block>
-    </form> <!-- Leaving from -->
+    </form>
+    <!-- Leaving from -->
     <form id="askFrom">
         <field name="fromField">
-            <prompt>What city are you leaving from? <noinput>The options are: London, Paris or New York.<reprompt />
-                </noinput>
+            <prompt bargein="false">
+                <break time="8000" />What city are you leaving from?
+            
+            
+            
             </prompt>
-            <option>London</option>
-            <option>Paris</option>
-            <option>New york</option>
+            <noinput>The options are: London, Paris or New York.<reprompt />
+            </noinput>
+            <option>london</option>
+            <option>paris</option>
+            <option>new york</option>
         </field>
         <filled>
             <assign name="from" expr="fromField" />
@@ -46,18 +48,20 @@
     <!-- Going to  -->
     <form id="askTo">
         <field name="toField">
-            <prompt>Where are you going? <noinput>The options are: London, Paris or New York.<reprompt />
-                </noinput>
+            <prompt bargein="false"><break time="8000" />Where are you travelling to?
             </prompt>
-            <option>London</option>
-            <option>Paris</option>
-            <option>New York</option>
+            <noinput>The options are: London, Paris or New York.<reprompt />
+            </noinput>
+            <option>london</option>
+            <option>paris</option>
+            <option>new York</option>
         </field>
         <filled>
             <assign name="to" expr="toField" />
             <!-- Error if from and to dates are the same, start over  -->
             <if cond="from == to ">
                 <prompt bargein="false">I'm sorry, you can't leave and return to the same city.</prompt>
+                <clear namelist="to"/>
                 <goto next="#askTo" />
             </if>
             <goto next="#askDate" />
@@ -66,33 +70,41 @@
     <!-- Select date -->
     <form id="askDate">
         <field name="toField">
-            <prompt>Is it a one-way trip?</prompt>
-            <option>Yes</option>
-            <option>No</option>
+            <prompt bargein="false">Is it a one-way trip?</prompt>
+            <option>yes</option>
+            <option>no</option>
         </field>
         <filled>
-            <goto next="#wayTrip" />
+            <if cond="oneway == 'yes'">
+                <goto next="#askOneWay" />
+                <else />
+                <goto next="#askReturn" />
+            </if>
         </filled>
     </form> <!-- If YES for one way trip -->
     <form id="askOneWay">
         <field name="oneWayField">
-            <prompt>Do you want to go <value expr="from" /> to<value expr="to" /> on<value expr="date" />?<option>Yes</option>
-                <option>No</option>
+            <prompt bargein="false">Do you want to travel from <value expr="from" />?
+            
+            
+            
             </prompt>
+            <option>yes</option>
+            <option>no</option>
         </field>
         <filled>
-            <if cond="oneWayField == 'yes'">
-                <goto next="#confirmFlight" />
-            </if>
-            <elseif cond="oneWayField == 'no'">
+            <assign name="confirm" expr="oneWayField" />
+            <if cond="confirm == 'yes'">
+                <goto next="#askConfirmOne" />
+                <else />
                 <goto next="#askFrom" />
-            </elseif>
+            </if>
         </filled>
     </form>
     <!-- If NO for one way trip -->
-    <form id="wayTrip">
+    <form id="askReturn">
         <field name="returnOn">
-            <prompt>What date do you want to return?</prompt>
+            <prompt bargein="false">What date do you want to return?</prompt>
             <option>Tomorrow</option>
             <option>Monday</option>
             <option>Tuesday</option>
@@ -108,14 +120,19 @@
         </field>
         <filled>
             <assign name="date" expr="returnOn" />
-            <goto next="#confirm" />
+            <goto next="#askConfirmTwo" />
         </filled>
     </form>
     <!-- Booking complete -->
-    <form id="confirm">
-        <field name="confirmFlight">
-            <prompt bargein="false">Your flight has been booked! You're travelling from <value expr="from" />to<value expr="to" />on<value expr="date" />.
-            </prompt>
-        </field>
+    <form id="askConfirmOne">
+        <block>Your flight has been booked! You're travelling from <value expr="from" />.
+            <goto next="#mainmenu" />
+        </block>
+    </form>
+    <form id="askConfirmTwo">
+        <block>Your flight has been booked! You're travelling from <value expr="from" />to<value expr="to" />on<value expr="date" />.
+            
+            <goto next="#mainmenu" />
+        </block>
     </form>
 </vxml>
