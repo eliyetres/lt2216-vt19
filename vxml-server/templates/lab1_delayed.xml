@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<vxml version="2.1" xmlns="http://www.w3.org/2001/vxml" xmlns:voxeo="http://community.voxeo.com/xmlns/vxml" application="lab1.xml">
+<vxml version="2.1" xmlns="http://www.w3.org/2001/vxml" xmlns:voxeo="http://community.voxeo.com/xmlns/vxml" application="lab1_menu">
+ <link next="lab1_menu">
+  <grammar mode="voice" version="1.0" xml:lang="en-US" root="root_rule">
+    <rule id="root_rule" scope="public">
+      <item>start over</item>
+    </rule>
+  </grammar>
+</link> 
     <!-- Delayed flights -->
     <form id="askDelayed">
         <block>
                 All flights are on time.
-                <goto next="lab1#mainmenu" />
+                <goto next="lab1_menu" />
         </block>
     </form>
 </vxml>

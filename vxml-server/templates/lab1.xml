@@ -6,7 +6,7 @@
     </noinput> <!-- Data model -->
     <var name="from" />
     <var name="to" />
-    <var name="date" />
+    <var name="returnDate" />
     <var name="returnTo" />
     <var name="oneway" />
     <var name="confirm" />
@@ -15,8 +15,8 @@
         <prompt>
             <break time="2000" />Welcome to the flight booking service. Do you want to <enumerate />
         </prompt>
-        <choice next="#askFrom"> Book </choice>
-        <choice next="#askDelayed"> Check delayed </choice>
+        <choice next="#askFrom"> book </choice>
+        <choice next="#askDelayed"> check delayed </choice>
     </menu>
     <!-- Delayed flights -->
     <form id="askDelayed">
@@ -51,7 +51,7 @@
             </noinput>
             <option>london</option>
             <option>paris</option>
-            <option>new York</option>
+            <option>new york</option>
         </field>
         <filled>
             <assign name="to" expr="toField" />
@@ -64,7 +64,7 @@
             <goto next="#askDate" />
         </filled>
     </form>
-    <!-- Select date -->
+    <!-- Select one-way trip or return -->
     <form id="askDate">
         <field name="toField">
             <prompt bargein="false">Is it a one-way trip?</prompt>
@@ -72,13 +72,14 @@
             <option>no</option>
         </field>
         <filled>
+            <assign name="oneway" expr="toField" />
             <if cond="oneway == 'yes'">
                 <goto next="#askOneWay" />
                 <else />
                 <goto next="#askReturn" />
             </if>
         </filled>
-    </form> <!-- If YES for one way trip -->
+    </form> <!-- If YES for one way trip ask to confirm-->
     <form id="askOneWay">
         <field name="oneWayField">
             <prompt bargein="false">Do you want to travel from <value expr="from" />?</prompt>
@@ -94,7 +95,7 @@
             </if>
         </filled>
     </form>
-    <!-- If NO for one way trip -->
+    <!-- If NO for one way trip ask return day -->
     <form id="askReturn">
         <field name="returnOn">
             <prompt bargein="false">What date do you want to return?</prompt>
@@ -116,14 +117,14 @@
             <goto next="#askConfirmTwo" />
         </filled>
     </form>
-    <!-- Booking complete -->
+    <!-- Booking complete, confirmations -->
     <form id="askConfirmOne">
-        <block>Your flight has been booked! You're travelling from <value expr="from" />.
+        <block>Your one-way flight has been confirmed! You're travelling from <value expr="from" />.
             <goto next="#mainmenu" />
         </block>
     </form>
     <form id="askConfirmTwo">
-        <block>Your flight has been booked! You're travelling from <value expr="from" />to<value expr="to" />on<value expr="date" />.            
+        <block>Your return flight has been confirmed! You're travelling from <value expr="from" />to<value expr="to" />on<value expr="date" />.            
             <goto next="#mainmenu" />
         </block>
     </form>
