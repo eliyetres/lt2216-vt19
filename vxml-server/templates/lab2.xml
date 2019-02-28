@@ -1,26 +1,41 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <vxml version="2.0">
   <nomatch>
-    I didn't understand.
+    I didn't understand.    
   </nomatch>
-  
   <noinput>
     You didn't say anything.
   </noinput>
-
+  <!-- Quotes grammar  -->
   <form id="test">
     <field name="foo">
       <prompt>Say something!</prompt>
-      <grammar src="grammars/lab2.xml"/>
+      <grammar src="grammars/lab2_quotes.xml" />
     </field>
     <filled>
-	<prompt>
-	  You said: <value expr="foo$.utterance"/>,
-	  with the interpretation <value expr="foo$.interpretation"/>
-	  and with a confidence of <value expr="foo$.confidence"/>
-	  <break time="2s"/>
-	</prompt>
-	<goto next="#test"/>
+      <prompt>
+  You said: <value expr="foo$.utterance" />,
+  with the interpretation <value expr="foo$.interpretation" />
+  and with a confidence of <value expr="foo$.confidence" />
+        <break time="3s" />
+      </prompt>
+      <goto next="#smarthome" />
+    </filled>
+  </form>
+  <!-- Smart home -->
+  <form id="smarthome">
+    <field name="smart">
+      <prompt>Welcome to voice control.</prompt>
+      <grammar src="grammars/lab2_objects.xml" />
+    </field>
+    <filled>
+      <prompt>
+  You said: <value expr="foo$.utterance" />,
+  with the interpretation <value expr="foo$.interpretation" />
+  and with a confidence of <value expr="foo$.confidence" />
+        <!-- <break time="2s" /> -->
+      </prompt>
+      <goto next="#smarthome" />
     </filled>
   </form>
 </vxml>

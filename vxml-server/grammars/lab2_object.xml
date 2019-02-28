@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grammar version="1.0" tag-format="semantics/1.0" root="ties">
+  <!-- Object rule -->
+  <rule id="object">
+    <one-of>
+      <item> light <tag> out = 'the lights'; </tag>
+      </item>
+      <item> heat <tag> out = 'the heating'; </tag>
+      </item>
+      <item> A.C. <tag> out = 'the air conditioning'; </tag>
+      </item>
+      <item> window <tag> out = 'the window'; </tag>
+      </item>
+      <item> door <tag> out = 'the door'; </tag>
+      </item>
+    </one-of>
+  </rule>
+  <!-- State rule -->
+  <rule id="state">
+    <one-of>
+      <item>on</item>
+      <item>off</item>
+      <item>open</item>
+      <item>close</item>
+    </one-of>
+  </rule>
+  <!-- Action rule -->
+  <rule id="action">
+    <one-of>
+      <item>turn on</item>
+      <item>turn off</item>
+      <item>open</item>
+      <item>close</item>
+    </one-of>
+  </rule>
+  <!-- Ties between object and actions rule -->
+  <rule id="ties">
+    <one-of>
+      <item>
+        <ruleref uri="#action" />
+        <ruleref uri="#state" />
+        <ruleref uri="#object" />
+        <tag>out.action=rules.action; out.state=rules.state; out.object=rules.object</tag>
+      </item>
+    </one-of>
+  </rule>
+</grammar>
