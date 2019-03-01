@@ -25,6 +25,7 @@
             <prompt bargein="false">
                 <break time="2500" />What city are you leaving from?            
             
+            
             </prompt>
             <noinput>The options are: London, Paris or New York.<reprompt />
             </noinput>
@@ -42,6 +43,7 @@
         <field name="toField">
             <prompt bargein="false">
                 <break time="1500" />Where are you travelling to?
+            
             
             </prompt>
             <noinput>The options are: London, Paris or New York.<reprompt />
@@ -90,7 +92,7 @@
             <option>yes</option>
             <option>no</option>
             <nomatch>
-        I didn't understand. You can reply yes or no.
+        I didn't understand. You can reply yes or no to this question.
         <reprompt />
             </nomatch>
         </field>
@@ -130,9 +132,14 @@
     <form id="askConfirmOne">
         <field name="confirmOneField">
             <prompt>Do you want to go from <value expr="from" /> on <value expr="leavedate" />?        
+            
             </prompt>
             <option>yes</option>
             <option>no</option>
+            <nomatch>
+        I didn't understand. You can reply yes or no to this question.
+        <reprompt />
+            </nomatch>
             <filled>
                 <clear namelist="confirm" />
                 <assign name="confirm" expr="confirmOneField" />
@@ -149,9 +156,14 @@
         <field name="confirmTwoField">
             <prompt>Do you want to travel from  <value expr="from" />on <value expr="leavedate" />to<value expr="to" />, returning on<value expr="returndate" />?            
         
+            
             </prompt>
             <option>yes</option>
             <option>no</option>
+            <nomatch>
+        I didn't understand. You can reply yes or no to this question.
+        <reprompt />
+            </nomatch>
             <filled>
                 <clear namelist="confirm" />
                 <assign name="confirm" expr="confirmTwoField" />
