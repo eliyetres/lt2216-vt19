@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grammar version="1.0" tag-format="semantics/1.0" root="ties">
   <!-- Object rule -->
-  <rule id="object" scope="public">
+  <rule id="objectOnOff" scope="public">
     <one-of>
       <item> the light <tag> out = 'the light'; </tag>
       </item>
-       <item> the lights <tag> out = 'the light'; </tag>
+      <item> the lights <tag> out = 'the light'; </tag>
       </item>
       <item> heat <tag> out = 'the heating'; </tag>
       </item>
@@ -13,28 +13,46 @@
       </item>
       <item> air conditioning <tag> out = 'the air conditioning'; </tag>
       </item>
+    </one-of>
+  </rule>
+  <rule id="objectOpenClose" scope="public">
+    <one-of>
       <item> window <tag> out = 'the window'; </tag>
       </item>
       <item> door <tag> out = 'the door'; </tag>
       </item>
     </one-of>
   </rule>
-  <!-- Action rule -->
-  <rule id="action" scope="public">
+  <!-- Action rule ON/OFF-->
+  <rule id="actionOnOff" scope="public">
     <one-of>
-      <item>turn on<tag>out="on";</tag></item>
-      <item>turn off<tag>out="off";</tag></item>
-      <item>open<tag>out="open";</tag></item>
-      <item>close<tag>out="close";</tag></item>
+      <item>turn on<tag>out="on";</tag>
+      </item>
+      <item>turn off<tag>out="off";</tag>
+      </item>
+    </one-of>
+  </rule>
+  <!-- Action rule OPEN/CLOSE-->
+  <rule id="actionOpenClose" scope="public">
+    <one-of>
+      <item>open<tag>out="open";</tag>
+      </item>
+      <item>close<tag>out="close";</tag>
+      </item>
     </one-of>
   </rule>
   <!-- Ties between object and actions rule -->
   <rule id="ties" scope="public">
     <one-of>
       <item>
-        <ruleref uri="#action" />
-        <ruleref uri="#object" />
-        <tag>out.action=rules.action; out.object=rules.object</tag>
+        <ruleref uri="#actionOpenClose" />
+        <ruleref uri="#objectOpenClose" />
+        <tag>out.action=rules.actionOpenClose; out.object=rules.objectOpenClose</tag>
+      </item>
+      <item>
+        <ruleref uri="#actionOnOff" />
+        <ruleref uri="#objectOnOff" />
+        <tag>out.action=rules.actionOnOff; out.object=rules.objectOnOff</tag>
       </item>
     </one-of>
   </rule>

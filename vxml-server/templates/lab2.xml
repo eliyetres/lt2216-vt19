@@ -9,7 +9,7 @@
   <!-- Ask for yes or no -->
   <var name="confirm" />
   <!-- Quotes grammar  -->
-<!--     <form id="test">
+    <form id="test">
     <field name="foo">
       <prompt>Say something!</prompt>
       <grammar src="grammars/lab2_quotes.xml" />
@@ -23,7 +23,7 @@
       </prompt>
       <goto next="#smarthome" />
     </filled>
-  </form> -->
+  </form>
   <!-- Smart home -->
   <form id="smarthome">
     <field name="smart">
@@ -40,13 +40,13 @@
       <!-- Confidence level as a floating-point value between 0.0 and 1.0. 0.0 represents the minimum level of confidence. 
 The value 1.0 represents the highest level of confidence -->
       <!-- High -	Acknowledge -->
-      <if cond="smart$.confidence &gt; 0.45">
-        <prompt>The <value expr="smart$.interpretation.object" /> is now <value expr="smart$.interpretation.action" />
+      <if cond="smart$.confidence &gt; 0.4">
+        <prompt> <value expr="smart$.interpretation.object" /> is now <value expr="smart$.interpretation.action" />
             , you're welcome.
           
         </prompt>
         <!-- Mid - Ask for confirmation -->
-        <elseif cond="smart$.confidence &gt; 0.45 &amp;&amp; smart$.confidence &lt; 0.03" />
+        <elseif cond="smart$.confidence &gt; 0.4 &amp;&amp; smart$.confidence &lt; 0.2" />
         <prompt>Are you sure you want to  <value expr="smart$.interpretation.action" /> the <value expr="smart$.interpretation.object" /> ?      
           </prompt>
         <option>yes</option>
