@@ -89,6 +89,10 @@
             <prompt bargein="false" timeout="3s">Is it a one-way trip?</prompt>
             <option>yes</option>
             <option>no</option>
+            <nomatch>
+        I didn't understand. You can reply yes or no.
+        <reprompt />
+            </nomatch>
         </field>
         <filled>
             <clear namelist="oneway" />

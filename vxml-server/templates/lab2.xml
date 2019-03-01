@@ -46,11 +46,12 @@ The value 1.0 represents the highest level of confidence -->
           
         </prompt>
         <!-- Mid - Ask for confirmation -->
-        <elseif cond="smart$.confidence &gt; 0.4 &amp;&amp; smart$.confidence &lt; 0.2" />
+        <elseif cond="smart$.confidence &gt; 0.4 &amp;&amp; smart$.confidence &lt; 0.05" />
         <prompt>Are you sure you want to  <value expr="smart$.interpretation.action" /> the <value expr="smart$.interpretation.object" /> ?      
           </prompt>
         <option>yes</option>
         <option>no</option>
+        <clear namelist="confirm" /> 
         <assign name="confirm" expr="smart" />
         <if cond="confirm == 'yes'">
           <prompt>The <value expr="smart$.interpretation.object" /> is <value expr="smart$.interpretation.action" />
@@ -58,12 +59,12 @@ The value 1.0 represents the highest level of confidence -->
           
           </prompt>
           <else />
-          <prompt>I didn't understand, you'll have to repeat that.</prompt>
+          <nomatch>I didn't understand, you'll have to repeat that.</nomatch>
           <goto next="#smarthome" />
         </if>
         <else />
         <!-- Low - Reprompt -->
-        <prompt>I didn't understand, you'll have to repeat that.</prompt>
+        <nomatch>I didn't understand, you'll have to repeat that.</nomatch>
         <goto next="#smarthome" />
       </if>
       <break time="3s" />
