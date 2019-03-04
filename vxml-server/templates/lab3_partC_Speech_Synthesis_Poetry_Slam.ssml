@@ -3,19 +3,19 @@
   Language and Region: Welsh English, 
   Voice: Geraint, Male -->
 <speak>
-    <s>Presently my <prosody volume="medium" rate="slow">soul</prosody> grew  <prosody volume="medium">stronger</prosody>; <prosody volume="medium">hesitating</prosody> then no longer,
+    <s><prosody rate="slow">Presently</prosody> my <prosody volume="medium" rate="slow">soul</prosody> grew  <prosody volume="medium">stronger</prosody>; <prosody volume="medium">hesitating</prosody> then no longer,
     </s>
-    <s>"Sir," said I, "or Madam, truly your forgiveness I <prosody volume="medium">implore</prosody>;
+    <s>"Sir," said I, "or Madam, truly your forgiveness I <prosody volume="medium" rate="x-slow">implore</prosody>;
     </s>
-    <s>But the fact is I was <prosody volume="medium">napping</prosody>, and so gently you came <prosody volume="medium">rapping</prosody>,
+    <s>But the fact is I was <prosody volume="medium" rate="slow">napping</prosody>, and so<prosody rate="slow"> gently</prosody> you came <prosody volume="medium" rate="slow">rapping</prosody>,
     </s>
     <s>And so faintly you came <prosody volume="medium">tapping </prosody> ,<prosody volume="medium"> tapping</prosody>  at my chamber <prosody volume="x-soft">door</prosody>,
     </s>
-    <s>That I scarce was sure I heard you"-<break time="0.5s" />here I opened wide the <emphasis level="reduced">
-            <prosody volume="x-soft" rate="slow">door</prosody>
-        </emphasis>;
+    <s>That I <prosody  rate="slow"> scarce</prosody> was sure I heard you"-<break time="0.5s" />here I opened <prosody volume="medium" >wide</prosody> the <emphasis level="reduced">
+            <prosody volume="x-soft" rate="x-slow">door;</prosody>
+        </emphasis>
     </s>
     <break time="0.5s" />
-    <s>Darkness there -<break time="0.5s" /> and nothing <prosody volume="x-soft" rate="x-slow">more</prosody>.
-    </s>
+    <s>Darkness <prosody rate="x-slow">there -</prosody><break time="0.5s" /> and nothing <prosody volume="x-soft" rate="x-slow">more</prosody>.
+    </s> 
 </speak>
