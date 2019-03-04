@@ -1,12 +1,40 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <vxml version="2.0">
   <form id="test">
     <block name="foo">
       <prompt>
-        The biggest loser among the top 10 cryptocurrencies is bitcoin cash (BCH), down 10.58 percent in the last 24 hours. It's also down 24.11 percent from the recent high of $1,641.40. 
-        <break time="2s"/>
-         The biggest loser among the top 10 cryptocurrencies is bitcoin cash (BCH), down 10.58 percent in the last 24 hours. It's also down 24.11 percent from the recent high of $1,641.40. 
-      </prompt> 
+        <!--  The biggest loser among the top 10 cryptocurrencies is bitcoin cash (BCH), down 10.58 percent in the last 24 hours. It's also down 24.11 percent from the recent high of $1,641.40.
+        <break time="2s"/> -->            
+        The biggest <prosody volume="moderate"> loser </prosody>  among the top 10 <phoneme alphabet="ipa" ph="&#x006B;
+&#x0072;
+&#x026A;
+&#x0070;
+&#x0074;
+&#x0259;
+&#x028A;
+&#0329;
+&#x006B;
+&#x028C;
+&#x0072;
+&#x0259;
+&#x006E;
+&#x0073;
+&#x0069;">cryptocurrencies</phoneme> is<prosody rate="slow">
+          <phoneme alphabet="ipa" ph="
+&#x0062;
+&#x026A;
+&#x0074;
+&#x006B;
+&#x0254;
+&#x026A;
+&#x006E;">bitcoin</phoneme>
+        </prosody>
+        <prosody volume="moderate">cash</prosody> (BCH), down                <!--  This part with cardinal numbers should work but it isn't -->
+        <say-as interpret-as="cardinal" detail=".">10.58</say-as>
+        <emphasis level="strong"> percent</emphasis> in the last 24 hours. It's also down <say-as interpret-as="cardinal" format=".">24.11</say-as>
+        <emphasis level="medium">percent</emphasis> from the recent high of <prosody rate="-10%">$1,641.40. </prosody>
+      </prompt>
+      <goto next="#test" />
     </block>
   </form>
 </vxml>

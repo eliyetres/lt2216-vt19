@@ -1,0 +1,19 @@
+<!-- Part B: The sound of dialogue: utterances 
+  This was created using Polly 
+   Language and Region: Welsh English, 
+  Voice: Geraint, Male -->
+<speak>
+I have your <prosody volume="medium">calendar open.</prosody>
+        <break time="0.5s" /> For what <prosody volume="medium">date?</prosody>
+        <break time="1s" />What <prosody volume="loud">time</prosody>would you like to <prosody volume="medium">start? </prosody>
+        <break time="1s" />
+How much  <prosody volume="loud">time</prosody> do you want to <prosody volume="medium"> block</prosody>
+        <break strength="x-weak" />
+        <prosody volume="x-loud"> out? </prosody>
+        <break time="1s" />
+What shall we<prosody volume="loud"> call</prosody>
+        <prosody volume="loud" rate="medium"> this?</prosody>OK,<break strength="x-weak" /> I've added an appointment at the <emphasis level="reduced">
+                <prosody volume="medium">hair</prosody> salon
+        </emphasis>, on the <say-as interpret-as="date" format="day">April 16</say-as> from <say-as interpret-as="cardinal">10</say-as> until <say-as interpret-as="cardinal ">12</say-as>.
+
+</speak>
