@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vxml version="2.0">
+    <!-- a frame-based dialogue system  -->
+    <!-- No match prompts -->
+    <nomatch>I didn't understand.<reprompt />
+    </nomatch>
+    <noinput>You didn't say anything.<reprompt />
+    </noinput>
+    <!-- Data model -->
+    <var name="from" />
+    <var name="to" />
+    <var name="leavedate" />
+    <var name="returndate" />
+    <var name="oneway" />
+    <var name="confirm" />
+
+    <!-- Menu -->
+    <menu id="mainmenu">
+        <prompt>
+            <break time="2000" />Welcome to the flight booking service. Do you want to <enumerate />
+        </prompt>
+        <choice next="#bookFlight"> book </choice>
+        <choice next="#askDelayed"> check delayed </choice>
+    </menu>
+    <!-- Delayed flights -->
+    <form id="askDelayed">
+        <block>
+                All flights are on time.
+                <goto next="#mainmenu" />
+        </block>
+    </form>
+    <!-- Leaving from -->
+    <form id="bookFlight">
+         <grammar src="grammars/mygrammar.xml" /> <!-- Field grammar used for entire field -->
+         <initial name="bypass_init">
+        <!-- <field name="bookField"> -->
+            <prompt bargein="false">
+                <break time="500" />Name your departure date, from and to city and return date.       
+            
+            </prompt>
+            <nomatch count="1">
+Please say something like "from Tokyo to Paris".
+</nomatch>
+<nomatch count="3">
+I'm sorry, I still don't understand.
+I'll ask you for information one piece at a time.
+<assign name="bypass_init" expr="true"/>
+<reprompt/>
+</nomatch>
+</initial>
+           
+        <!-- </field> -->
+  <field name="from_city">
+<grammar src="grammars/mygrammar.xml#city"
+type="application/srgs+xml"/>
+<prompt>From which city are you leaving?</prompt>
+</field>
+<field name="to_city">
+<grammar src="grammars/mygrammar.xml#city"
+type="application/srgs+xml"/>
+<prompt>Which city are you going to?</prompt>
+</field>
+</form>
+    
+</vxml>
