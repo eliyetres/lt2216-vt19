@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grammar version="1.0" tag-format="semantics/1.0" root="booking">
+    <!-- Main rule -->
+    <rule id="booking" scope="public">
+        from
+        <item>
+            <item>
+                <ruleref uri="city"/>
+                <tag>out=rules.city;</tag>
+            </item>
+            to
+            <item>
+                <ruleref uri="city"/>
+                <tag>out=rules.city;</tag>
+            </item>
+            leaving
+            <item>
+                <ruleref uri="date"/>
+                <tag>out=rules.date</tag>
+            </item>
+            returning
+            <item>
+                <ruleref uri="date"/>
+                <tag>out=rules.date</tag>
+            </item>
+            eating
+            <item>
+                <ruleref uri="meal"/>
+                <tag>out=rules.meal</tag>
+            </item>
+        </item>
+    </rule>
+    <!-- Possible destinations -->
+    <rule id="city" scope="public">
+        <one-of>
+            <item>
+                London
+                <tag>out="london";</tag>
+            </item>
+            <item>
+                Paris
+                <tag>out="paris";</tag>
+            </item>
+            <item>
+                New York
+                <tag>out="new york";</tag>
+            </item>
+            <item>
+                Tokyo
+                <tag>out="tokyo";</tag>
+            </item>
+        </one-of>
+    </rule> <!-- Options from/to destinations -->
+    <rule id="cityOptions" scope="public">
+        <one-of>
+            <item> from </item>
+            <item> to </item>
+        </one-of>
+        <ruleref uri="#city" />
+    </rule> <!-- Options leave/return dates -->
+    <rule id="dateOptions" scope="public">
+        <one-of>
+            <item> on </item>
+            <item> returning </item>
+        </one-of>
+        <ruleref uri="#date" />
+    </rule> <!-- Possible dates -->
+    <rule id="date" scope="public">
+        <one-of>
+            <item>Tomorrow<tag>out="tomorrow";</tag></item>
+            <item>Monday<tag>out="monday";</tag></item>
+            <item>Tuesday<tag>out="tuesday";</tag></item>
+            <item>Wednesday<tag>out="wednesday";</tag></item>
+            <item>Thursday<tag>out="thursday";</tag></item>
+            <item>Friday<tag>out="friday";</tag></item>
+            <item>Saturday<tag>out="saturday";</tag></item>
+            <item>Sunday<tag>out="sunday";</tag></item>
+        </one-of>
+    </rule>
+    <!-- Meal options -->
+    <rule id="meal" scope="public">
+        <one-of>
+            <item>
+                Regular
+                <tag>out="standard";</tag>
+            </item>
+            <item>
+                Normal
+                <tag>out="standard";</tag>
+            </item>
+            <item>Pescatarian</item>
+            <item>Vegetarian</item>
+            <item>Vegan</item>
+            <item>Gluten-free</item>
+            <item>
+                Gluten
+                <tag>out="gluten-free";</tag>
+            </item>
+        </one-of>
+    </rule>
+    <!-- Confirmation -->
+    <rule id="yesno">
+        <one-of>
+            <item>yes</item>
+            <item>no</item>
+        </one-of>
+    </rule>
+</grammar>
