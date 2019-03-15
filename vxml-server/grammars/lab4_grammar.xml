@@ -2,33 +2,28 @@
 <grammar version="1.0" tag-format="semantics/1.0" root="booking">
     <!-- Main rule -->
     <rule id="booking" scope="public">
-        from
         <item>
-            <item>
-                <ruleref uri="city"/>
-                <tag>out=rules.city;</tag>
-            </item>
+            I want to go from
+            <ruleref uri="#city" />
             to
-            <item>
-                <ruleref uri="city"/>
-                <tag>out=rules.city;</tag>
-            </item>
-            leaving
-            <item>
-                <ruleref uri="date"/>
-                <tag>out=rules.date</tag>
-            </item>
-            returning
-            <item>
-                <ruleref uri="date"/>
-                <tag>out=rules.date</tag>
-            </item>
-            eating
-            <item>
-                <ruleref uri="meal"/>
-                <tag>out=rules.meal</tag>
-            </item>
+            <ruleref uri="#city" />
+            leaving on
+            <ruleref uri="#date" />
+            returning on
+            <ruleref uri="#date" />
+            meal type
+            <ruleref uri="#meal" />
+            <tag>
+        <!-- out.fieldName -->
+       out.from = rules.city; 
+       out.to = rules.city;
+       out.leavedate=rules.date; 
+       out.returndate=rules.date; 
+       out.mealtype=rules.meal; 
+       </tag>
         </item>
+
+        <!-- add one-of combinations for main rule here -->
     </rule>
     <!-- Possible destinations -->
     <rule id="city" scope="public">
@@ -67,19 +62,47 @@
     </rule> <!-- Possible dates -->
     <rule id="date" scope="public">
         <one-of>
-            <item>Tomorrow<tag>out="tomorrow";</tag></item>
-            <item>Monday<tag>out="monday";</tag></item>
-            <item>Tuesday<tag>out="tuesday";</tag></item>
-            <item>Wednesday<tag>out="wednesday";</tag></item>
-            <item>Thursday<tag>out="thursday";</tag></item>
-            <item>Friday<tag>out="friday";</tag></item>
-            <item>Saturday<tag>out="saturday";</tag></item>
-            <item>Sunday<tag>out="sunday";</tag></item>
+            <item>
+                Tomorrow
+                <tag>out="tomorrow";</tag>
+            </item>
+            <item>
+                Monday
+                <tag>out="monday";</tag>
+            </item>
+            <item>
+                Tuesday
+                <tag>out="tuesday";</tag>
+            </item>
+            <item>
+                Wednesday
+                <tag>out="wednesday";</tag>
+            </item>
+            <item>
+                Thursday
+                <tag>out="thursday";</tag>
+            </item>
+            <item>
+                Friday
+                <tag>out="friday";</tag>
+            </item>
+            <item>
+                Saturday
+                <tag>out="saturday";</tag>
+            </item>
+            <item>
+                Sunday
+                <tag>out="sunday";</tag>
+            </item>
         </one-of>
     </rule>
     <!-- Meal options -->
     <rule id="meal" scope="public">
         <one-of>
+            <item>
+                Standard
+                <tag>out="standard";</tag>
+            </item>
             <item>
                 Regular
                 <tag>out="standard";</tag>
@@ -88,10 +111,18 @@
                 Normal
                 <tag>out="standard";</tag>
             </item>
-            <item>Pescatarian</item>
-            <item>Vegetarian</item>
-            <item>Vegan</item>
-            <item>Gluten-free</item>
+            <item>
+                Vegetarian
+                <tag>out="vegetarian";</tag>
+            </item>
+            <item>
+                Vegan
+                <tag>out="vegan";</tag>
+            </item>
+            <item>
+                Gluten free
+                <tag>out="gluten-free";</tag>
+            </item>
             <item>
                 Gluten
                 <tag>out="gluten-free";</tag>

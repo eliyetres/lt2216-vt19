@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vxml version="2.0">
+    <!-- Project for Dialogue Systems -->
+    <!-- No match prompts -->
+    <nomatch>
+        I didn't understand.
+        <reprompt />
+    </nomatch>
+    <noinput>
+        Please say that again.
+        <reprompt />
+    </noinput>
+<!-- Menu -->
+<menu id="mainmenu">
+    <prompt>
+        Welcome to the game. Do you want to
+        <enumerate />
+    </prompt>
+    <choice next="game"> start game</choice>
+</menu>
+
+
+
+</vxml>
