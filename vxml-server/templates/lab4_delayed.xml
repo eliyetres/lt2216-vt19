@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vxml version="2.0">
+ <link next="lab4">
+</link> 
+    <!-- Delayed flights -->
+    <form id="askDelayed">
+        <block>
+            All flights are on time.
+            <goto next="lab4" />
+        </block>
+    </form>
+</vxml>
