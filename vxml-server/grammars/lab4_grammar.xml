@@ -2,35 +2,156 @@
 <grammar version="1.0" tag-format="semantics/1.0" root="booking">
     <!-- Main rule -->
     <rule id="booking" scope="public">
-        from
-        <item>
+        <one-of>
             <item>
-                <ruleref uri="city"/>
-                <tag>out=rules.city;</tag>
+                <ruleref uri="#actionFrom" />
+                <tag>out=rules.actionFrom;</tag>
             </item>
-            to
             <item>
-                <ruleref uri="city"/>
-                <tag>out=rules.city;</tag>
+                <ruleref uri="#actionTo" />
+                <tag>out=rules.actionTo;</tag>
             </item>
-            leaving
             <item>
-                <ruleref uri="date"/>
-                <tag>out=rules.date</tag>
+                <ruleref uri="#actionDepart" />
+                <tag>out=rules.actionDepart;</tag>
             </item>
-            returning
             <item>
-                <ruleref uri="date"/>
-                <tag>out=rules.date</tag>
+                <ruleref uri="#actionReturn" />
+                <tag>out=rules.actionReturn;</tag>
             </item>
-            eating
             <item>
-                <ruleref uri="meal"/>
-                <tag>out=rules.meal</tag>
+                <ruleref uri="#actionMeal" />
+                <tag>out=rules.actionMeal;</tag>
             </item>
-        </item>
+            <item>
+                <ruleref uri="#actionFrom" />
+                <ruleref uri="#city" />
+                <tag>out=rules.actionFrom; out=rules.city;</tag>
+            </item>
+            <item>
+                <ruleref uri="#actionTo" />
+                <ruleref uri="#city" />
+                <tag>out=rules.actionTo; out=rules.city;</tag>
+            </item>
+            <item>
+                <ruleref uri="#actionFrom" />
+                <ruleref uri="#city" />
+                <ruleref uri="#actionTo" />
+                <ruleref uri="#city" />
+                <tag>out=rules.actionFrom; out=rules.city;out=rules.actionTo; out=rules.city;</tag>
+            </item>
+            <item>
+                <ruleref uri="#actionFrom" />
+                <ruleref uri="#actionTo" />
+                <ruleref uri="#meal" />
+                <tag>out=rules.actionFrom; out=rules.actionTo; out=rules.meal;</tag>
+            </item>
+            <item>
+                <ruleref uri="#actionFrom" />
+                <ruleref uri="#city" />
+                <ruleref uri="#actionTo" />
+                <ruleref uri="#city" />
+                <ruleref uri="#meal" />
+                <tag>out=rules.actionFrom; out=rules.city;out=rules.actionTo; out=rules.city;out=rules.meal</tag>
+            </item>
+        </one-of>
     </rule>
-    <!-- Possible destinations -->
+    <!-- From combinations -->
+    <rule id="actionFrom" scope="public">
+        <one-of>
+            <item>
+                from
+                <tag>out="from";</tag>
+            </item>
+            <item>
+                leave from
+                <tag>out="from";</tag>
+            </item>
+            <item>
+                leave
+                <tag>out="from";</tag>
+            </item>
+            <item>
+                go from
+                <tag>out="from";</tag>
+            </item>
+        </one-of>
+        <ruleref uri="#city" />
+        <tag>out=rules.city;</tag>
+    </rule>
+    <!-- To combinations -->
+    <rule id="actionTo" scope="public">
+        <one-of>
+            <item>
+                to
+                <tag>out="to";</tag>
+            </item>
+            <item>
+                go to
+                <tag>out="to";</tag>
+            </item>
+            <item>
+                going to
+                <tag>out="to";</tag>
+            </item>
+            <item>
+                travelling to
+                <tag>out="to";</tag>
+            </item>
+        </one-of>
+        <ruleref uri="#city" />
+        <tag>out=rules.city;</tag>
+    </rule>
+    <!-- Depart combinations -->
+    <rule id="actionDepart" scope="public">
+        <one-of>
+            <item>
+                on
+                <tag>out="on";</tag>
+            </item>
+            <item>
+                leaving on
+                <tag>out="on";</tag>
+            </item>
+        </one-of>
+        <ruleref uri="#date" />
+        <tag>out=rules.date;</tag>
+    </rule>
+    <!-- Return combinations -->
+    <rule id="actionReturn" scope="public">
+        <one-of>
+            <item>
+                on
+                <tag>out="on";</tag>
+            </item>
+            <item>
+                leaving on
+                <tag>out="on";</tag>
+            </item>
+        </one-of>
+        <ruleref uri="#date" />
+        <tag>out=rules.date;</tag>
+    </rule>
+    <!-- Meal combinations -->
+    <rule id="actionMeal" scope="public">
+        <one-of>
+            <item>
+                to eat
+                <tag>out="meal";</tag>
+            </item>
+            <item>
+                eating
+                <tag>out="meal";</tag>
+            </item>
+            <item>
+                meal
+                <tag>out="meal";</tag>
+            </item>
+            <ruleref uri="#meal" />
+            <tag>out=rules.meal;</tag>
+        </one-of>
+    </rule>
+    <!-- Destinations -->
     <rule id="city" scope="public">
         <one-of>
             <item>
@@ -45,36 +166,56 @@
                 New York
                 <tag>out="new york";</tag>
             </item>
-            <item>
-                Tokyo
-                <tag>out="tokyo";</tag>
-            </item>
         </one-of>
-    </rule> <!-- Options from/to destinations -->
+    </rule> <!-- From/to destinations -->
     <rule id="cityOptions" scope="public">
         <one-of>
             <item> from </item>
             <item> to </item>
         </one-of>
         <ruleref uri="#city" />
-    </rule> <!-- Options leave/return dates -->
+    </rule> <!-- Leave/return dates -->
     <rule id="dateOptions" scope="public">
         <one-of>
             <item> on </item>
             <item> returning </item>
         </one-of>
         <ruleref uri="#date" />
-    </rule> <!-- Possible dates -->
+    </rule> <!-- Dates -->
     <rule id="date" scope="public">
         <one-of>
-            <item>Tomorrow<tag>out="tomorrow";</tag></item>
-            <item>Monday<tag>out="monday";</tag></item>
-            <item>Tuesday<tag>out="tuesday";</tag></item>
-            <item>Wednesday<tag>out="wednesday";</tag></item>
-            <item>Thursday<tag>out="thursday";</tag></item>
-            <item>Friday<tag>out="friday";</tag></item>
-            <item>Saturday<tag>out="saturday";</tag></item>
-            <item>Sunday<tag>out="sunday";</tag></item>
+            <item>
+                Tomorrow
+                <tag>out="tomorrow";</tag>
+            </item>
+            <item>
+                Monday
+                <tag>out="monday";</tag>
+            </item>
+            <item>
+                Tuesday
+                <tag>out="tuesday";</tag>
+            </item>
+            <item>
+                Wednesday
+                <tag>out="wednesday";</tag>
+            </item>
+            <item>
+                Thursday
+                <tag>out="thursday";</tag>
+            </item>
+            <item>
+                Friday
+                <tag>out="friday";</tag>
+            </item>
+            <item>
+                Saturday
+                <tag>out="saturday";</tag>
+            </item>
+            <item>
+                Sunday
+                <tag>out="sunday";</tag>
+            </item>
         </one-of>
     </rule>
     <!-- Meal options -->

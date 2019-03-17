@@ -38,16 +38,15 @@
     <form id="bookFlight">
         <grammar src="grammars/lab4_grammar.xml" />
         <initial name="complete">
-        <prompt bargein="false">Name the city you're leaving from, where you're going and your flight and return date. </prompt>
-
-        <!-- stops working here -->
-        <catch event="nomatch noinput">
-            <prompt bargein="false">Say something like "I want to go from Paris to London tomorrow, returning on Friday.</prompt>
-        </catch>
-        <catch event="nomatch noinput" count="2">
-            <prompt>I'm sorry couldn't make out what you said. I'll start asking one question at a time. </prompt>
-            <assign name="complete" expr="true" />
-        </catch>
+            <prompt bargein="false">Name the city you're leaving from, where you're going and your flight and return date. </prompt>
+            <!-- stops working here -->
+            <catch event="nomatch noinput">
+                <prompt bargein="false">Say something like "I want to go from Paris to London tomorrow, returning on Friday.</prompt>
+            </catch>
+            <catch event="nomatch noinput" count="2">
+                <prompt>I'm sorry couldn't make out what you said. I'll start asking one question at a time. </prompt>
+                <assign name="complete" expr="true" />
+            </catch>
         </initial>
         <!-- From -->
         <field name="fromField">
@@ -74,7 +73,7 @@
             </nomatch>
         </field>
         <!-- Leaving date -->
-        <field name="leaveField">
+        <field name="departField">
             <prompt bargein="false">What date are you leaving?</prompt>
             <grammar src="grammars/lab4_grammar.xml#date" />
             <nomatch>
@@ -106,33 +105,31 @@
                 <prompt>You can choose regular, vegetarian, pescatarian, vegan or gluten-free.</prompt>
             </nomatch>
         </field>
-
         <!-- Confirmation -->
         <field name="confirm"></field>
         <prompt>
-                Your flight from
-                <value expr="from" />
-                to
-                <value expr="to" />
-                leaving on
-                <value expr="leavedate" />
-                , returning on
-                <value expr="returndate" />
-                on has been reserved. Your meal preference is
-                <value expr="meal" />
-                . Do you want to confirm this booking?
-            </prompt>
-            <grammar src="grammars/lab4_grammar.xml#yesno" />
-            <filled>
+            Your flight from
+            <value expr="from" />
+            to
+            <value expr="to" />
+            leaving on
+            <value expr="leavedate" />
+            , returning on
+            <value expr="returndate" />
+            on has been reserved. Your meal preference is
+            <value expr="meal" />
+            . Do you want to confirm this booking?
+        </prompt>
+        <grammar src="grammars/lab4_grammar.xml#yesno" />
+        <filled>
             <if cond="confirmation == 'no'">
-                <clear namelist="from"/>
-                <clear namelist="to"/>
-                <clear namelist="leavedate"/>
-                <clear namelist="returndate"/>
-                <clear namelist="meal"/>
+                <clear namelist="from" />
+                <clear namelist="to" />
+                <clear namelist="leavedate" />
+                <clear namelist="returndate" />
+                <clear namelist="meal" />
             </if>
-            </filled>
-
+        </filled>
         <filled>
             <assign name="from" expr="fromField" />
             <assign name="to" expr="toField" />
@@ -141,11 +138,10 @@
                 <prompt> I'm sorry, you can't leave and return to the same city. I'll ask you again. </prompt>
                 <goto nextitem="from" />
             </if>
-            <assign name="leavedate" expr="leaveField" />
+            <assign name="leavedate" expr="departField" />
             <assign name="returndate" expr="returnField" />
             <assign name="meal" expr="mealField" />
             <goto next="#confirmation" />
         </filled>
     </form>
-   
 </vxml>
