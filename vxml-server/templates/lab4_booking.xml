@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <vxml version="2.0">
+    <!-- Data model -->
+    <var name="from" />
+    <var name="to" />
+    <var name="leavedate" />
+    <var name="returndate" />
+    <var name="meal" />
+    <var name="confirm" />
     <!-- Leaving from -->
     <form id="bookFlight">
         <grammar src="grammars/lab4_grammar.xml" />
