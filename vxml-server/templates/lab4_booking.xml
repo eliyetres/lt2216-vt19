@@ -75,7 +75,7 @@
                 <prompt>What meal type would you like?</prompt>
             </nomatch>
             <nomatch count="2">
-                <prompt>You can choose regular, vegetarian, pescatarian, vegan or gluten-free.</prompt>
+                <prompt>You can choose standard, vegetarian, vegan or gluten-free.</prompt>
             </nomatch>
         </field>
         <!-- Confirmation -->
