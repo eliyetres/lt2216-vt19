@@ -3,22 +3,18 @@
     <!-- Project for Dialogue Systems -->
     <!-- No match prompts -->
     <nomatch>
-        I didn't understand.
+        To start the game, say "start".
         <reprompt />
     </nomatch>
     <noinput>
-        Please say that again.
+        Could you please say that again?
         <reprompt />
     </noinput>
-<!-- Menu -->
-<menu id="mainmenu">
-    <prompt>
-        Welcome to the game. Do you want to
-        <enumerate />
-    </prompt>
-    <choice next="game"> start game</choice>
-</menu>
-
-
-
+    <!-- Menu -->
+    <menu id="mainmenu">
+        <prompt>
+            Welcome. Say "start" if you want to begin a new game.
+        </prompt>
+        <choice next="game"> start</choice>
+    </menu>
 </vxml>

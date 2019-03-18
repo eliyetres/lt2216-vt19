@@ -2,30 +2,6 @@
 <grammar version="1.0" tag-format="semantics/1.0" root="booking">
     <!-- Main rule -->
     <rule id="booking" scope="public">
-<<<<<<< HEAD
-        <item>
-            I want to go from
-            <ruleref uri="#city" />
-            to
-            <ruleref uri="#city" />
-            leaving on
-            <ruleref uri="#date" />
-            returning on
-            <ruleref uri="#date" />
-            meal type
-            <ruleref uri="#meal" />
-            <tag>
-        <!-- out.fieldName -->
-       out.from = rules.city; 
-       out.to = rules.city;
-       out.leavedate=rules.date; 
-       out.returndate=rules.date; 
-       out.mealtype=rules.meal; 
-       </tag>
-        </item>
-
-        <!-- add one-of combinations for main rule here -->
-=======
         <one-of>
             <item>
                 <ruleref uri="#actionFrom" />
@@ -125,7 +101,6 @@
         </one-of>
         <ruleref uri="#city" />
         <tag>out=rules.city;</tag>
->>>>>>> f082581fb74ea408d49f559bed61b7636477b6b7
     </rule>
     <!-- Depart combinations -->
     <rule id="actionDepart" scope="public">

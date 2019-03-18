@@ -3,7 +3,7 @@
     <!-- Data model -->
     <var name="from" />
     <var name="to" />
-    <var name="leavedate" />
+    <var name="departdate" />
     <var name="returndate" />
     <var name="meal" />
     <var name="confirm" />
@@ -86,7 +86,7 @@
             to
             <value expr="to" />
             leaving on
-            <value expr="leavedate" />
+            <value expr="departdate" />
             , returning on
             <value expr="returndate" />
             on has been reserved. Your meal preference is
@@ -98,7 +98,7 @@
             <if cond="confirmation == 'no'">
                 <clear namelist="from" />
                 <clear namelist="to" />
-                <clear namelist="leavedate" />
+                <clear namelist="departdate" />
                 <clear namelist="returndate" />
                 <clear namelist="meal" />
             </if>
@@ -111,7 +111,7 @@
                 <prompt> I'm sorry, you can't leave and return to the same city. I'll ask you again. </prompt>
                 <goto nextitem="from" />
             </if>
-            <assign name="leavedate" expr="departField" />
+            <assign name="departdate" expr="departField" />
             <assign name="returndate" expr="returnField" />
             <assign name="meal" expr="mealField" />
             <goto next="#confirmation" />

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grammar version="1.0" tag-format="semantics/1.0" root="maingame">
+    <!-- Main rule. Add combinations to things here. -->
+    <rule id="maingame" scope="public">
+        <one-of>
+            <item></item>
+        </one-of>
+    </rule>
+    <!-- Actions -->
+    <rule id="actions">
+        <one-of>
+            <item>open</item>
+            <item>close</item>
+            <item>unlock</item>
+        </one-of>
+    </rule>
+     <!-- Items possible to pick up -->
+    <rule id="pickupable">
+        <item>key</item>
+    </rule>
+     <!-- Items possible to open -->
+    <rule id="openable">
+        <one-of>
+            <item>door</item>
+            <item>drawer</item>
+            <item>window</item>
+        </one-of>
+    </rule>
+     <!-- Items possible for unlock -->
+    <rule id="unlockable">
+        <item>door</item>
+    </rule>
+     <!-- All items used with actions -->
+    <rule id="items">
+        <one-of>
+            <item>door</item>
+            <item>drawer</item>
+            <item>window</item>
+        </one-of>
+    </rule>
+</grammar>

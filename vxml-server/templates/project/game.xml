@@ -1,8 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <vxml version="2.0">
-
-
- <!-- Starts game -->
+    <nomatch>
+        I tried doing what you told me, but nothing happened.
+        <reprompt />
+    </nomatch>
+    <noinput>
+        I'm not sure what to do, tell me again.
+        <reprompt />
+    </noinput>  
+<!-- Data model -->
+<var name="door" />
+<var name="drawer" />
+<var name="window" />
+<var name="key" />
+<!-- Set staring states -->
+<assign name="key" expr="false" />
+<assign name="door" expr="locked" />
+<assign name="drawer" expr="closed" />
+<assign name="window" expr="closed" />
+ <!-- Main game loop -->
     <form id="startgame">
+        <grammar src="grammars/project_grammar.xml" />
+        <block>This is a game.</block>
+        <catch event="nomatch noinput">
+                <prompt bargein="false">Try saying something like "open door" and see what happens.</prompt>
+            </catch>
+        <!-- Check status of objects -->
+        <if cond="startgame$.utterance == door || startgame$.utterance == drawer || startgame$.utterance == window">
+            <!-- Don't know if this will work! -->
+            <block>It's <var name="startgame$.utterance" />.</block>
+        </if>
+
 </form>
+
+<!-- Help menu listing all items and their attributes in the room -->
+    <form id="helpmenu">
+        <block>
+            <block>The items I see are:</block>           
+            A door that's  <value expr="door" />.          
+            A window that's <var name="window" />.
+            A drawer that's <var name="drawer" /> .
+             <if cond="drawer == open and key==false">
+                 <block>Inside the <var name="drawer" /> drawer is a key. </block>
+                 </if>
+            <if cond="drawer == open and key==true">
+                <block>The drawer is empty.</block>
+            </if>
+        </block>
+        <goto next="#startgame" />
+</form>
+
 </vxml>
