@@ -1,20 +1,120 @@
-<!-- a frame-based dialogue system  -->
 <?xml version="1.0" encoding="UTF-8"?>
-<vxml version="2.1" xmlns="http://www.w3.org/2001/vxml" xmlns:voxeo="http://community.voxeo.com/xmlns/vxml">
-<nomatch>
-I didn't understand.
-<reprompt/>
-</nomatch>
-
-<noinput>
-You didn't say anything.
-<reprompt/>
-</noinput>
-
-<!-- Data model -->
-<var name="from" />
-<var name="to" />
-<var name="leavedate" />
-<var name="returndate" />
-<var name="oneway" />
-<var name="confirm" />
+<vxml version="2.0">
+    <!-- Data model -->
+    <var name="from" />
+    <var name="to" />
+    <var name="leavedate" />
+    <var name="returndate" />
+    <var name="meal" />
+    <var name="confirm" />
+    <!-- Leaving from -->
+    <form id="bookFlight">
+        <grammar src="grammars/lab4_grammar.xml" />
+        <initial name="complete">
+            <prompt bargein="false">Name the city you're leaving from, where you're going and your flight and return date. </prompt>
+            <!-- stops working here -->
+            <catch event="nomatch noinput">
+                <prompt bargein="false">Say something like "I want to go from Paris to London tomorrow, returning on Friday.</prompt>
+            </catch>
+            <catch event="nomatch noinput" count="2">
+                <prompt>I'm sorry couldn't make out what you said. I'll start asking one question at a time. </prompt>
+                <assign name="complete" expr="true" />
+            </catch>
+        </initial>
+        <!-- From -->
+        <field name="fromField">
+            <prompt bargein="false">What city are you travelling from?     
+            </prompt>
+            <grammar src="grammars/lab4_grammar.xml#city" />
+            <nomatch>
+                <prompt>Say a city name.</prompt>
+            </nomatch>
+            <nomatch count="2">
+                <prompt>You can choose between Paris, London and New York.</prompt>
+            </nomatch>
+        </field>
+        <!-- To -->
+        <field name="toField">
+            <prompt bargein="false">Where are you going?       
+            </prompt>
+            <grammar src="grammars/lab4_grammar.xml#city" />
+            <nomatch>
+                <prompt>Say a city name.</prompt>
+            </nomatch>
+            <nomatch count="2">
+                <prompt>You can choose between Paris, London and New York.</prompt>
+            </nomatch>
+        </field>
+        <!-- Leaving date -->
+        <field name="departField">
+            <prompt bargein="false">What date are you leaving?</prompt>
+            <grammar src="grammars/lab4_grammar.xml#date" />
+            <nomatch>
+                <prompt>Name a day of the week.</prompt>
+            </nomatch>
+            <nomatch count="2">
+                <prompt>You can choose tomorrow, or any day of the week.</prompt>
+            </nomatch>
+        </field>
+        <!-- Returning date-->
+        <field name="returnField">
+            <prompt bargein="false">When are you returning?</prompt>
+            <grammar src="grammars/lab4_grammar.xml#date" />
+            <nomatch>
+                <prompt>Name a day of the week.</prompt>
+            </nomatch>
+            <nomatch count="2">
+                <prompt>You can choose tomorrow, or any day of the week.</prompt>
+            </nomatch>
+        </field>
+        <!-- Meal-->
+        <field name="mealField">
+            <prompt bargein="false">Tell me if you want a standard meal, or what other special meal type you prefer. </prompt>
+            <grammar src="grammars/lab4_grammar.xml#meal" />
+            <nomatch>
+                <prompt>What meal type would you like?</prompt>
+            </nomatch>
+            <nomatch count="2">
+                <prompt>You can choose regular, vegetarian, pescatarian, vegan or gluten-free.</prompt>
+            </nomatch>
+        </field>
+        <!-- Confirmation -->
+        <field name="confirm"></field>
+        <prompt>
+            Your flight from
+            <value expr="from" />
+            to
+            <value expr="to" />
+            leaving on
+            <value expr="leavedate" />
+            , returning on
+            <value expr="returndate" />
+            on has been reserved. Your meal preference is
+            <value expr="meal" />
+            . Do you want to confirm this booking?
+        </prompt>
+        <grammar src="grammars/lab4_grammar.xml#yesno" />
+        <filled>
+            <if cond="confirmation == 'no'">
+                <clear namelist="from" />
+                <clear namelist="to" />
+                <clear namelist="leavedate" />
+                <clear namelist="returndate" />
+                <clear namelist="meal" />
+            </if>
+        </filled>
+        <filled>
+            <assign name="from" expr="fromField" />
+            <assign name="to" expr="toField" />
+            <!-- Error if from and to dates are the same, start over  -->
+            <if cond="from == to">
+                <prompt> I'm sorry, you can't leave and return to the same city. I'll ask you again. </prompt>
+                <goto nextitem="from" />
+            </if>
+            <assign name="leavedate" expr="departField" />
+            <assign name="returndate" expr="returnField" />
+            <assign name="meal" expr="mealField" />
+            <goto next="#confirmation" />
+        </filled>
+    </form>
+</vxml>

@@ -24,9 +24,10 @@
             Welcome to the flight booking service. Do you want to
             <enumerate />
         </prompt>
-        <choice next="#bookFlight"> book </choice>
-        <choice next="#askDelayed"> check delayed </choice>
+        <choice next="lab4_booking"> book </choice>
+        <choice next="lab4_delayed"> check delayed </choice>
     </menu>
+<<<<<<< HEAD
     <!-- Delayed flights -->
     <form id="askDelayed">
         <block>
@@ -150,4 +151,8 @@
             </if>
         </filled>
     </form>
+=======
+
+
+>>>>>>> f082581fb74ea408d49f559bed61b7636477b6b7
 </vxml>
