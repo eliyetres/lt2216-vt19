@@ -8,55 +8,93 @@
         I'm not sure what to do, tell me again.
         <reprompt />
     </noinput>
+    <!-- Global help  -->
+    <link event="help">
+        <grammar src="grammars/project_grammar.xml#help" />
+    </link>
+      <!-- Global look around  -->
+    <link event="look">
+        <grammar src="grammars/project_grammar.xml#look" />
+    </link>
+    <!--  Help  -->
+    <help count="1">
+        Say "look around" and I'll tell you what I see.
+        <reprompt />
+    </help>
+    <help count="2">
+    Try giving me commands like "open the door".
+</help>
     <!-- Data model -->
     <var name="door" />
     <var name="drawer" />
     <var name="table" />
     <var name="window" />
     <var name="key" />
-    <var name="selected_item" />
-    <!-- Set staring states -->
+    <var name="selected_item" /> 
+    
+<!-- INTRODUCTION -->
+<form id="maingame">
+    <grammar src="grammars/project_grammar.xml" />  
+     <!-- Set staring states -->
     <assign name="key" expr="false" />
     <assign name="door" expr="locked" />
     <assign name="drawer" expr="closed" />
-    <assign name="window" expr="closed" />
-    <!-- Main game loop -->
-    <form id="startgame">
-        <grammar src="grammars/project_grammar.xml" />
-        <block name="welcome">
-        You are inside a room. Blabla game intro.
-        </block>
-        <field id="itemField">
-           <!--  Part 1 is opening the drawer -->
-            <grammar src="grammars/project_grammar.xml#items" />
-            <assign name="selected_item" expr="itemField" />
-            <block>The <var name="selected_item" /> is </block>
+    <assign name="window" expr="locked" />  
+    <block>I'm inside a room and I need to figure out how to get out of here.</block>    
+    <!--  Part 1 is opening the drawer -->
+    <field name="enter_room">
+        <if cond="drawer == 'open'">
+            <goto nextitem="open_drawer" />
+            </if>
+         <prompt bargein="false">I need to figure out what to do.</prompt>
+         <grammar src="grammars/project_grammar.xml#item" />  
+          <nomatch>
+                <prompt bargein="false">That didn't work.</prompt>
+            </nomatch>
+            <nomatch count="3">
+                <prompt bargein="false">You told me to use <value expr="enter_room$.utterance" /> but I don't know how. Maybe try something else.</prompt>
+            </nomatch> 
+            <if cond="smart$.interpretation.action == 'open' &amp;&amp; enter_room$.interpretation.item == 'drawer'">
+                <if cond="drawer == 'open'">
+                    <block>The drawer is already open.</block>
+                </if>
+            <assign name="drawer" expr="open" />
+                <prompt bargein="false">The drawer is <var name="drawer" />.</prompt>
+
+            </if>
+            <!-- Get info about items in room  -->
+            <if cond="enter_room$.interpretation.item == 'door'">
+                <prompt bargein="false">The door is <var name="door" />.</prompt>
+            </if>
+            <if cond="enter_room$.interpretation.item == 'drawer'">
+                <prompt bargein="false">The drawer is <var name="drawer" />. </prompt>
+            </if>
+            <if cond="enter_room$.interpretation.item == 'window'">
+                <prompt bargein="false">The window is <var name="window" />.</prompt>
+            </if>
         </field>
-        <!-- Check status of object -->
-        <if cond="startgame$.utterance == door || startgame$.utterance == drawer || startgame$.utterance == window">
-            
-            <block>
-                It's a
-                <var name="startgame$.utterance" /> 
-                .
-            </block>
+    <!--  Part 2 is opening the drawer -->
+    <field name="open_drawer">
+        <if cond="key == true">
+            <goto nextitem="unlock_door" />
         </if>
-        <if cond="startgame$.utterance == look || startgame$.utterance == look around">
-            <goto next="#lookaround" />
-        </if>
-       <!--  Help  -->
-        <help count="1">
-            Say "look around" and I'll tell you what I see.
-            <reprompt />
-        </help>
-        <help count="2">
-Try giving me commands like "open the door".
-</help>
+        <prompt bargein="false">I need to find a way out.</prompt>
+        <filled>
+            <assign name="selected_item" expr="open_drawer" />
+            </filled>
+        </field>
+    <!--  Part 3 is getting the key -->    
+    <field name="unlock_door">
+    <prompt bargein="false">I've got the key! Let's try it on the door.</prompt>
+    </field>
+
+        
+
     </form>
     <!-- Help menu listing all items and their attributes in the room -->
-    <form id="lookaround">
+    <look>
         <block>
-            <block>The items I see are:</block>
+            The items I see are:
             A door that's
             <value expr="door" />
             .          
@@ -67,17 +105,14 @@ Try giving me commands like "open the door".
             The drawer is
             <var name="drawer" />
             .
-            <if cond="drawer == open and key==false">
-                <block>
+            <if cond="drawer == open and key==false">               
                     Inside the
                     <var name="drawer" />
-                    drawer is a key.
-                </block>
+                    drawer is a key.                
             </if>
             <if cond="drawer == open and key==true">
-                <block>The drawer is empty.</block>
+                The drawer is empty.
             </if>
         </block>
-        <goto next="#startgame" />
-    </form>
+    </look>
 </vxml>

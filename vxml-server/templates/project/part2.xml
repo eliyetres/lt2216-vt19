@@ -1,0 +1,25 @@
+        <field id="itemField">           
+            <grammar src="grammars/project_grammar.xml#items" />
+            <assign name="selected_item" expr="itemField" />           
+           <if cond="selected_item == 'door'">
+               <if cond="door == 'locked'">                   
+                   The <var name="selected_item" /> is  <var name="door" />.
+                   <goto nextitem="itemField" />
+               </if>
+           </if>
+           <if cond="selected_item == 'drawer'">
+                The <var name="selected_item" /> is  <var name="drawer" />.
+                <if cond="selected_item == 'drawer' "></if>
+           </if>
+           <if cond="selected_item == 'window'">
+               <block>The <var name="selected_item" /> is <var name="window" />. </block>
+               <goto nextitem="itemField" />
+           </if>
+        </field>
+        <field id="itemField">
+            <!--  Part 2 getting the key from the drawer. -->
+            <block>I have got a key.</block>
+            <grammar src="grammars/project_grammar.xml#items" />
+            
+            
+        </field>     

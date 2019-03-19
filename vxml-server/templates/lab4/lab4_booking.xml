@@ -114,7 +114,7 @@
             <assign name="departdate" expr="departField" />
             <assign name="returndate" expr="returnField" />
             <assign name="meal" expr="mealField" />
-            <goto next="#confirmation" />
+            <goto next="#confirm" />
         </filled>
     </form>
 </vxml>

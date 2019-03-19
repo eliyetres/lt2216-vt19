@@ -16,6 +16,6 @@
             Welcome. Say "start" if you want to begin a new game or "quit" if you want to exit.
         </prompt>
         <choice next="game"> start</choice>
-        <choice next="exit"> exit</choice>
+        <choice next="exit#intro"> exit</choice>
     </menu>
 </vxml>
