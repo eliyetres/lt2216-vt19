@@ -66,10 +66,38 @@ def lab4():
     response.headers["Content-Type"] = "application/xml"
     return response
 
+@app.route('/lab4_booking')
+def lab4_booking():
+    vxml = render_template('lab4_booking.xml')
+    response = make_response(vxml)
+    response.headers["Content-Type"] = "application/xml"
+    return response
 
-@app.route('/project/project')
-def project():
-    vxml = render_template('project.xml')
+@app.route('/lab4_delayed')
+def lab4_delayed():
+    vxml = render_template('lab4_delayed.xml')
+    response = make_response(vxml)
+    response.headers["Content-Type"] = "application/xml"
+    return response
+
+
+@app.route('/project/project_menu')
+def project_menu():
+    vxml = render_template('project_menu.xml')
+    response = make_response(vxml)
+    response.headers["Content-Type"] = "application/xml"
+    return response
+
+@app.route('/project/exit')
+def project_exit():
+    vxml = render_template('exit.xml')
+    response = make_response(vxml)
+    response.headers["Content-Type"] = "application/xml"
+    return response
+
+@app.route('/project/game')
+def project_exit():
+    vxml = render_template('game.xml')
     response = make_response(vxml)
     response.headers["Content-Type"] = "application/xml"
     return response

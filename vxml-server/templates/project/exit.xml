@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vxml version="2.0">
+    <!-- Project for Dialogue Systems -->
+    <form id="goodbye">
+        <block>
+            <prompt>                
+                Goodbye. 
+            </prompt>
+        </block>
+    </form>
+</vxml>

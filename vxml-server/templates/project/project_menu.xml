@@ -7,14 +7,15 @@
         <reprompt />
     </nomatch>
     <noinput>
-        Could you please say that again?
+        I didn't hear that.
         <reprompt />
     </noinput>
     <!-- Menu -->
     <menu id="mainmenu">
         <prompt>
-            Welcome. Say "start" if you want to begin a new game.
+            Welcome. Say "start" if you want to begin a new game or "quit" if you want to exit.
         </prompt>
         <choice next="game"> start</choice>
+        <choice next="exit"> exit</choice>
     </menu>
 </vxml>
