@@ -96,7 +96,7 @@ def project_exit():
     return response
 
 @app.route('/project/game')
-def project_exit():
+def project_game():
     vxml = render_template('game.xml')
     response = make_response(vxml)
     response.headers["Content-Type"] = "application/xml"
