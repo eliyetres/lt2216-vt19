@@ -1,9 +1,0 @@
- <!-- Check status of object -->
-        <if cond="maingame$.utterance == 'door' || maingame$.utterance == 'drawer' || maingame$.utterance == 'window'">
-            
-            <block>
-                It's a
-                <var name="maingame$.utterance" /> 
-                .
-            </block>
-        </if>

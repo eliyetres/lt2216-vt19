@@ -3,11 +3,17 @@
     <!-- Main rule. Add combinations to things here. -->
     <rule id="maingame" scope="public">
         <one-of>
-            <!-- Ask for help -->
-            <item><ruleref uri="#help" />
-                <tag>out=rules.help;</tag></item>
-                 <!-- Look around -->
-                 <item><tag>out=rules.look;</tag></item>
+            <item>
+            <ruleref uri="#action" />
+            <ruleref uri="#item" />
+            <tag>out.action=rules.action; out.object=rules.item</tag>      
+            </item>
+            <item>
+            <ruleref uri="#pickup" />
+            <ruleref uri="#key" />
+            <tag>out.action=rules.pickup; out.object=rules.key</tag>      
+            </item>
+
         </one-of>
     </rule>
     <!-- GLOBAL HELP -->
@@ -29,6 +35,14 @@
         </one-of>
     </rule>
 
+    <rule id="inventory">
+        <one-of>
+            <item>inventory</item>
+            <item>check inventory</item>
+            <item>open inventory</item>
+        </one-of>
+    </rule>
+
     <!-- Actions -->
     <rule id="action">
         <one-of>
@@ -46,20 +60,20 @@
         <item>pick up<tag>out="pick up";</tag></item>
         <item>remove<tag>out="pick up";</tag></item>
         </one-of>
-        <ruleref uri="#key_item" />
+        <ruleref uri="#key" />
     </rule>
-    <rule id="key_item">
+    <rule id="key">
+        <item repeat="0-1">
+            <one-of>
+                <item> the </item>
+                <item> a </item>
+            </one-of>
+        </item>
         <one-of>
-        <item>key<tag>out="the key";</tag></item>
-        <item>a key<tag>out="the key";</tag></item>
-        <item>the key<tag>out="the key";</tag></item>
+        <item>key<tag>out="key";</tag></item>
         </one-of>
     </rule>
  
-    <!-- Items possible for unlock -->
-    <rule id="unlockable">
-        <item>door</item>
-    </rule>
     <!-- All items used with actions -->
 <rule id="item">
     <item repeat="0-1">
@@ -75,5 +89,6 @@
     </one-of>
     out=rules.itemField;
 </rule>
+
 
 </grammar>

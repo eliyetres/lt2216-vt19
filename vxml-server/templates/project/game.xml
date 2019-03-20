@@ -7,7 +7,14 @@
     <noinput>
         I'm not sure what to do, tell me again.
         <reprompt />
-    </noinput>
+    </noinput>    
+    <!-- Data model -->
+    <var name="door" />
+    <var name="drawer" />
+    <var name="table" />
+    <var name="window" />
+    <var name="key" />
+    <var name="selected_item" /> 
     <!-- Global help  -->
     <link event="help">
         <grammar src="grammars/project_grammar.xml#help" />
@@ -15,6 +22,10 @@
       <!-- Global look around  -->
     <link event="look">
         <grammar src="grammars/project_grammar.xml#look" />
+    </link>
+          <!-- Global inventory  -->
+    <link event="inventory">
+        <grammar src="grammars/project_grammar.xml#inventory" />
     </link>
     <!--  Help  -->
     <help count="1">
@@ -24,53 +35,78 @@
     <help count="2">
     Try giving me commands like "open the door".
 </help>
-    <!-- Data model -->
-    <var name="door" />
-    <var name="drawer" />
-    <var name="table" />
-    <var name="window" />
-    <var name="key" />
-    <var name="selected_item" /> 
-    
-<!-- INTRODUCTION -->
-<form id="maingame">
-    <grammar src="grammars/project_grammar.xml" />  
-     <!-- Set staring states -->
+<!--  Inventory  -->
+ <inventory>
+     <if cond="key == false">
+         I'm not carrying anything.
+     </if>
+     <if cond="key == true">
+         I have a key.
+     </if>
+ </inventory>
+
+<!-- Help menu listing all items and their attributes in the room -->
+<look>
+    <prompt>
+        The items I see are:
+        A door that's <value expr="door" />.          
+        A window that's  <var name="window" />.
+        In the room there is a table with a drawer.
+        The drawer is <var name="drawer" />.
+        <if cond="drawer == 'open' and key=='false'">               
+                Inside the <var name="drawer" /> drawer is a key.                
+        </if>
+        <if cond="drawer == 'open' and key=='true'">
+            The drawer is empty.
+        </if>
+    </prompt>
+    <reprompt/>
+</look>
+
+
+<form id="intro">
+    <!-- Set staring states -->
     <assign name="key" expr="false" />
     <assign name="door" expr="locked" />
     <assign name="drawer" expr="closed" />
     <assign name="window" expr="locked" />  
-    <block>I'm inside a room and I need to figure out how to get out of here.</block>    
+    <!-- =================== -->
+   <block>I'm inside a room. I need to figure out how to get <emphasis>out</emphasis> of here.</block>    
+   <break size="small"/> 
+   <goto next="#maingame"/>
+</form>
+
+   
+<!-- INTRODUCTION -->
+<form id="maingame">
+    <grammar src="grammars/project_grammar.xml" />      
     <!--  Part 1 is opening the drawer -->
     <field name="enter_room">
         <if cond="drawer == 'open'">
             <goto nextitem="open_drawer" />
             </if>
-         <prompt bargein="false">I need to figure out what to do.</prompt>
+         <prompt timeout="120s">I need to figure out what to do.</prompt>
          <grammar src="grammars/project_grammar.xml#item" />  
           <nomatch>
-                <prompt bargein="false">That didn't work.</prompt>
+                <block>That didn't work.</block>
             </nomatch>
             <nomatch count="3">
-                <prompt bargein="false">You told me to use <value expr="enter_room$.utterance" /> but I don't know how. Maybe try something else.</prompt>
+                <block>You told me to <value expr="enter_room$.utterance" /> but I don't know how. Maybe try something else.</block>
             </nomatch> 
-            <if cond="smart$.interpretation.action == 'open' &amp;&amp; enter_room$.interpretation.item == 'drawer'">
-                <if cond="drawer == 'open'">
-                    <block>The drawer is already open.</block>
-                </if>
-            <assign name="drawer" expr="open" />
-                <prompt bargein="false">The drawer is <var name="drawer" />.</prompt>
+            <if cond="enter_room$.interpretation.action == 'open' &amp;&amp; enter_room$.interpretation.item == 'drawer'">                
+                    <block> <break size="small"/> I've opened the drawer.</block>
+                    <assign name="drawer" expr="open" />                
+                   </if>
 
-            </if>
             <!-- Get info about items in room  -->
             <if cond="enter_room$.interpretation.item == 'door'">
-                <prompt bargein="false">The door is <var name="door" />.</prompt>
-            </if>
-            <if cond="enter_room$.interpretation.item == 'drawer'">
-                <prompt bargein="false">The drawer is <var name="drawer" />. </prompt>
-            </if>
-            <if cond="enter_room$.interpretation.item == 'window'">
-                <prompt bargein="false">The window is <var name="window" />.</prompt>
+                <block><break size="small"/> The door is <var name="door" />.</block>
+            
+            <elseif cond="enter_room$.interpretation.item == 'drawer'"/>
+                <block><break size="small"/> The drawer is <var name="drawer" />. </block>
+            
+            <elseif cond="enter_room$.interpretation.item == 'window'"/>
+                <block><break size="small"/> The window is <var name="window" />.</block>
             </if>
         </field>
     <!--  Part 2 is opening the drawer -->
@@ -78,41 +114,45 @@
         <if cond="key == true">
             <goto nextitem="unlock_door" />
         </if>
-        <prompt bargein="false">I need to find a way out.</prompt>
+        <prompt timeout="120s">I need to find a way out.</prompt>
+         <if cond="open_drawer$.interpretation.action == 'open' &amp;&amp; open_drawer$.interpretation.item == 'drawer'">
+                <if cond="drawer == 'open'">
+                    <prompt>The drawer is already open.</prompt>                    
+                </if>
+            <if cond="open_drawer$.interpretation.pickup == 'pick up' &amp;&amp; open_drawer$.interpretation.key == 'key'"></if>
+                <goto nextitem="unlock_door" />
+        </if>
         <filled>
             <assign name="selected_item" expr="open_drawer" />
             </filled>
         </field>
     <!--  Part 3 is getting the key -->    
     <field name="unlock_door">
-    <prompt bargein="false">I've got the key! Let's try it on the door.</prompt>
+    <prompt timeout="120s">.</prompt>
+    <!-- Get info about items in room  -->
+        <if cond="unlock_door$.interpretation.item == 'door'">
+            <block><break size="small"/> The door is <var name="door" />.</block>
+        
+        <elseif cond="unlock_door$.interpretation.item == 'drawer'"/>
+            <block><break size="small"/> The drawer is <var name="drawer" />. </block>
+        
+        <elseif cond="unlock_door$.interpretation.item == 'window'"/>
+            <block><break size="small"/> The window is <var name="window" />.</block>
+        </if>
+        <if cond="unlock_door$.interpretation.action == 'pick up' &amp;&amp; unlock_door$.interpretation.key == 'key'">                
+            <block> <break size="small"/> I've opened the drawer.</block>
+            <assign name="drawer" expr="open" />                
+            </if>
+
     </field>
 
         
 
-    </form>
-    <!-- Help menu listing all items and their attributes in the room -->
-    <look>
-        <block>
-            The items I see are:
-            A door that's
-            <value expr="door" />
-            .          
-            A window that's
-            <var name="window" />
-            .
-            In the room there is a table with a drawer.
-            The drawer is
-            <var name="drawer" />
-            .
-            <if cond="drawer == open and key==false">               
-                    Inside the
-                    <var name="drawer" />
-                    drawer is a key.                
-            </if>
-            <if cond="drawer == open and key==true">
-                The drawer is empty.
-            </if>
-        </block>
-    </look>
+</form><field id="finished">
+    <block>
+        You got out and finished the <emphasis>game!</emphasis>
+    </block>
+    <goto next="exit" />
+</field>
+
 </vxml>

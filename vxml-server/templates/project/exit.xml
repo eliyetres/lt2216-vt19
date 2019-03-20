@@ -2,10 +2,8 @@
 <vxml version="2.0">
     <!-- Project for Dialogue Systems -->
     <form id="goodbye">
-        <block>
-            <prompt>                
-                Goodbye. 
-            </prompt>
+        <block>         
+                Goodbye and thanks for playing! 
         </block>
     </form>
 </vxml>

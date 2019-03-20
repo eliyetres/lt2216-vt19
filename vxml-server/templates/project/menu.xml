@@ -11,7 +11,7 @@
         <reprompt />
     </noinput>
     <!-- Menu -->
-    <menu id="mainmenu">
+    <menu id="mainmenu" accept="approximate">
         <prompt>
             Welcome. Say "start" if you want to begin a new game or "quit" if you want to exit.
         </prompt>
