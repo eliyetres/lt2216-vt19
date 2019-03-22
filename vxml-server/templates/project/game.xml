@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <vxml version="2.0">
     <nomatch>
-        I tried doing what you told me, but nothing happened.
+        That doesn't work.
         <reprompt />
     </nomatch>
     <noinput>
-        I'm not sure what to do, tell me again.
+        I'm not sure what to do.  Tell me <emphasis>again</emphasis>. <break size="small"/>
         <reprompt />
     </noinput>    
     <!-- Data model -->
@@ -15,19 +15,18 @@
     <var name="window" />
     <var name="key" />
     <var name="selected_item" /> 
-    <!-- Global help  -->
-    <link event="help">
-        <grammar src="grammars/project_grammar.xml#help" />
-    </link>
-      <!-- Global look around  -->
-    <link event="look">
-        <grammar src="grammars/project_grammar.xml#look" />
-    </link>
-          <!-- Global inventory  -->
-    <link event="inventory">
-        <grammar src="grammars/project_grammar.xml#inventory" />
-    </link>
-    <!--  Help  -->
+
+<!-- Global commands  -->
+<link event="help">
+    <grammar src="grammars/project_grammar.xml#help" />
+</link>
+<link next="#lookaround">
+    <grammar src="grammars/project_grammar.xml#look" />
+</link>
+<link next="#inventory">
+    <grammar src="grammars/project_grammar.xml#inventory" />
+</link>
+<!--  Help  -->
     <help count="1">
         Say "look around" and I'll tell you what I see.
         <reprompt />
@@ -35,124 +34,151 @@
     <help count="2">
     Try giving me commands like "open the door".
 </help>
+
 <!--  Inventory  -->
- <inventory>
+<form id="inventory">
+    <block>
      <if cond="key == false">
-         I'm not carrying anything.
+        I'm not <emphasis>carrying</emphasis> anything.
      </if>
      <if cond="key == true">
-         I have a key.
+        I have <emphasis>a key</emphasis>
+        in my inventory.
      </if>
- </inventory>
+     <goto next="#maingame"/>
+     </block>
+ </form>
 
-<!-- Help menu listing all items and their attributes in the room -->
-<look>
-    <prompt>
-        The items I see are:
-        A door that's <value expr="door" />.          
-        A window that's  <var name="window" />.
-        In the room there is a table with a drawer.
-        The drawer is <var name="drawer" />.
-        <if cond="drawer == 'open' and key=='false'">               
-                Inside the <var name="drawer" /> drawer is a key.                
+<!--  Look around  -->
+<form id="lookaround">    
+    <block>
+        Behind me there is a door that's <value expr="door" />.
+        High up on the wall there is a small <value expr="window" /> window.
+        In the middle of the room there is a table with a <value expr="drawer" /> drawer.
+        <if cond="drawer == 'open' &amp;&amp; key==false">           
+           Inside the <value expr="drawer" /> drawer there is a key.              
         </if>
-        <if cond="drawer == 'open' and key=='true'">
-            The drawer is empty.
-        </if>
-    </prompt>
-    <reprompt/>
-</look>
+        <if cond="drawer == 'open' &amp;&amp; key==true">
+           The drawer is empty.
+        </if> 
+        <goto next="#maingame"/> 
+    </block>
+</form>
 
 
 <form id="intro">
     <!-- Set staring states -->
+<block>
     <assign name="key" expr="false" />
-    <assign name="door" expr="locked" />
-    <assign name="drawer" expr="closed" />
-    <assign name="window" expr="locked" />  
-    <!-- =================== -->
-   <block>I'm inside a room. I need to figure out how to get <emphasis>out</emphasis> of here.</block>    
+    <assign name="door" expr="'locked'" />
+    <assign name="drawer" expr="'closed'" />
+    <assign name="window" expr="'locked'" />  
+</block>
+   <block>I'm inside a room. <break/> I need to figure out how to get <emphasis>out of here</emphasis>.
    <break size="small"/> 
-   <goto next="#maingame"/>
+   <goto next="#maingame"/>   
+   </block>  
+   
 </form>
 
-   
 <!-- INTRODUCTION -->
 <form id="maingame">
-    <grammar src="grammars/project_grammar.xml" />      
-    <!--  Part 1 is opening the drawer -->
-    <field name="enter_room">
-        <if cond="drawer == 'open'">
-            <goto nextitem="open_drawer" />
-            </if>
-         <prompt timeout="120s">I need to figure out what to do.</prompt>
-         <grammar src="grammars/project_grammar.xml#item" />  
-          <nomatch>
-                <block>That didn't work.</block>
-            </nomatch>
-            <nomatch count="3">
-                <block>You told me to <value expr="enter_room$.utterance" /> but I don't know how. Maybe try something else.</block>
-            </nomatch> 
-            <if cond="enter_room$.interpretation.action == 'open' &amp;&amp; enter_room$.interpretation.item == 'drawer'">                
-                    <block> <break size="small"/> I've opened the drawer.</block>
-                    <assign name="drawer" expr="open" />                
-                   </if>
+<!-- Check where the game is -->    
+<if cond="drawer == 'open'"><goto nextitem="#get_key"/></if>
+<if cond="key == true"><goto nextitem="#has_key"/></if>
+<if cond="door == 'unlocked'"><goto nextitem="#door_unlocked"/></if>
+<if cond="door == 'open'"><goto nextitem="#door_open"/></if>
 
-            <!-- Get info about items in room  -->
-            <if cond="enter_room$.interpretation.item == 'door'">
-                <block><break size="small"/> The door is <var name="door" />.</block>
-            
-            <elseif cond="enter_room$.interpretation.item == 'drawer'"/>
-                <block><break size="small"/> The drawer is <var name="drawer" />. </block>
-            
-            <elseif cond="enter_room$.interpretation.item == 'window'"/>
-                <block><break size="small"/> The window is <var name="window" />.</block>
+<!-- PART 1 -->
+<field name="open_drawer">
+    <grammar src="grammars/project_grammar.xml" />
+     <prompt timeout="120s">  <break/> </prompt>    
+       <filled>
+           <if cond="open_drawer$.interpretation.action == 'open' &amp;&amp; open_drawer$.interpretation.object == 'drawer'">                
+                <prompt>  Ok, I'll open the drawer.</prompt>
+                <assign name="drawer" expr="'open'" /> 
+
+            <elseif cond="open_drawer$.interpretation.action == 'open' &amp;&amp; open_drawer$.interpretation.object == 'door'"/>
+                <prompt>I can't <value expr="open_drawer$.interpretation.action" /> the  <value expr="open_drawer$.interpretation.object" />, it's <value expr="door" /></prompt>
+                <goto next="#maingame"/>  
+            <else />
+                <!-- Skip back to game -->
+                <prompt>I tried to <value expr="open_drawer$.interpretation.action" /> the  <value expr="open_drawer$.interpretation.object" /> like you told be but it didn't work.</prompt>
+                <goto next="#maingame"/>                     
             </if>
-        </field>
-    <!--  Part 2 is opening the drawer -->
-    <field name="open_drawer">
-        <if cond="key == true">
-            <goto nextitem="unlock_door" />
-        </if>
-        <prompt timeout="120s">I need to find a way out.</prompt>
-         <if cond="open_drawer$.interpretation.action == 'open' &amp;&amp; open_drawer$.interpretation.item == 'drawer'">
-                <if cond="drawer == 'open'">
-                    <prompt>The drawer is already open.</prompt>                    
-                </if>
-            <if cond="open_drawer$.interpretation.pickup == 'pick up' &amp;&amp; open_drawer$.interpretation.key == 'key'"></if>
-                <goto nextitem="unlock_door" />
-        </if>
-        <filled>
-            <assign name="selected_item" expr="open_drawer" />
+      </filled>     
+      </field> 
+      <!-- PART 2 -->
+      <field name="get_key">   
+          <prompt timeout="120s">  <break/> </prompt>    
+          <grammar src="grammars/project_grammar.xml" />      
+          <filled>                
+            <if cond="get_key$.interpretation.action == 'pick up' &amp;&amp; get_key$.interpretation.object == 'key'">  
+                <prompt>I've picked up the key.</prompt>
+                <assign name="key" expr="true" />
+            <elseif cond="get_key$.interpretation.action == 'open' &amp;&amp; get_key$.interpretation.object == 'door'"/>
+            <prompt>I can't <value expr="get_key$.interpretation.action" /> the  <value expr="get_key$.interpretation.object" />, it's <value expr="door" /></prompt>
+            <goto next="#maingame"/>  
+            <else />
+                <prompt>I tried to <value expr="get_key$.interpretation.action" /> the <value expr="get_key$.interpretation.object" /> like you told be but it didn't work.</prompt>
+                <goto next="#maingame"/>  
+            </if>
             </filled>
-        </field>
-    <!--  Part 3 is getting the key -->    
-    <field name="unlock_door">
-    <prompt timeout="120s">.</prompt>
-    <!-- Get info about items in room  -->
-        <if cond="unlock_door$.interpretation.item == 'door'">
-            <block><break size="small"/> The door is <var name="door" />.</block>
-        
-        <elseif cond="unlock_door$.interpretation.item == 'drawer'"/>
-            <block><break size="small"/> The drawer is <var name="drawer" />. </block>
-        
-        <elseif cond="unlock_door$.interpretation.item == 'window'"/>
-            <block><break size="small"/> The window is <var name="window" />.</block>
+          </field>
+           <!-- PART 3 -->
+        <field name="has_key">
+           <prompt timeout="120s">  <break/> </prompt>  
+           <grammar src="grammars/project_grammar.xml" />   
+           <filled>
+        <if cond="has_key$.interpretation.action == 'unlock' &amp;&amp; has_key$.interpretation.object == 'door'">  
+            <prompt>I unlocked the door.</prompt>
+            <assign name="key" expr="true" />
+        <else />
+            <prompt>I can't <value expr="has_key$.interpretation.action" /> the <value expr="has_key$.interpretation.object" />.</prompt>
+             <goto next="#maingame"/>  
         </if>
-        <if cond="unlock_door$.interpretation.action == 'pick up' &amp;&amp; unlock_door$.interpretation.key == 'key'">                
-            <block> <break size="small"/> I've opened the drawer.</block>
-            <assign name="drawer" expr="open" />                
-            </if>
+          </filled>
+          </field>
 
-    </field>
+        <!-- PART 4 -->
+        <field name="door_unlocked">
+           <prompt timeout="120s">  <break/> </prompt>  
+           <grammar src="grammars/project_grammar.xml" />   
+           <filled>
+        <if cond="has_key$.interpretation.action == 'open' &amp;&amp; has_key$.interpretation.object == 'door'">  
+            <prompt>I've opened the door.</prompt>
+            <assign name="door" expr="'open'" />
+        <else />
+            <prompt>I can't <value expr="has_key$.interpretation.action" /> the <value expr="has_key$.interpretation.object" />.</prompt>
+             <goto next="#maingame"/>  
+        </if>
+          </filled>
+          </field>
 
+
+        <!-- PART 5 -->
+        <field name="door_open">
+           <prompt timeout="120s">  <break/> </prompt>  
+           <grammar src="grammars/project_grammar.xml#moving" />   
+           <filled>
+        <if cond="has_key$.interpretation.action == 'get' &amp;&amp; has_key$.interpretation.object == 'outside'">  
+            <prompt>I walk out the door.</prompt>
+            <assign name="door" expr="'open'" />
+            <goto next="#finished"/>  
+        <else />
+            <prompt>I can't <value expr="has_key$.interpretation.action" /> the <value expr="has_key$.interpretation.object" />.</prompt>
+             <goto next="#maingame"/>  
+        </if>
+          </filled>
+          </field>
+   
         
 
-</form><field id="finished">
+</form>
+<form id="finished">
     <block>
-        You got out and finished the <emphasis>game!</emphasis>
+        You've finished exited the room and finished the game!
     </block>
-    <goto next="exit" />
-</field>
+</form>
 
 </vxml>

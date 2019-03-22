@@ -11,11 +11,13 @@
         <reprompt />
     </noinput>
     <!-- Menu -->
+    <goto next="game#intro"/>
     <menu id="mainmenu" accept="approximate">
         <prompt>
-            Welcome. Say "start" if you want to begin a new game or "quit" if you want to exit.
+            Say <emphasis>"start"</emphasis> if you want to begin a new game or <emphasis>"quit"</emphasis> if you want to quit the game.
         </prompt>
-        <choice next="game"> start</choice>
-        <choice next="exit#intro"> exit</choice>
+        
+        <choice next="game#intro"> start</choice>
+        <choice next="exit"> quit</choice>
     </menu>
 </vxml>

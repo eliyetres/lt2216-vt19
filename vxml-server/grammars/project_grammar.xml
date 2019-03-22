@@ -1,93 +1,91 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grammar version="1.0" tag-format="semantics/1.0" root="maingame">
-    <!-- Main rule. Add combinations to things here. -->
-    <rule id="maingame" scope="public">
-        <one-of>
-            <item>
-            <ruleref uri="#action" />
-            <ruleref uri="#item" />
-            <tag>out.action=rules.action; out.object=rules.item</tag>      
-            </item>
-            <item>
-            <ruleref uri="#pickup" />
-            <ruleref uri="#key" />
-            <tag>out.action=rules.pickup; out.object=rules.key</tag>      
-            </item>
 
-        </one-of>
-    </rule>
-    <!-- GLOBAL HELP -->
-    <rule id="help">
-        <one-of>
-            <item>help</item>
-            <item>help me</item>
-            <item>i don't know</item>
-            <item>where am i</item>
-        </one-of>
-    </rule>
-
-    <rule id="look">
-        <one-of>
-            <item>look</item>
-            <item>look at</item>
-            <item>look around</item>
-            <item>move</item>
-        </one-of>
-    </rule>
-
-    <rule id="inventory">
-        <one-of>
-            <item>inventory</item>
-            <item>check inventory</item>
-            <item>open inventory</item>
-        </one-of>
-    </rule>
-
-    <!-- Actions -->
-    <rule id="action">
-        <one-of>
-            <item>open</item>
-            <item>close</item>
-            <item>unlock</item>
-        </one-of>
-    </rule>
-    <!-- Pick up key -->
-    <rule id="pickup">
-         <one-of>
-        <item>get <tag>out="pick up";</tag></item>
-        <item>take<tag>out="pick up";</tag></item>
-        <item>pick<tag>out="pick up";</tag></item>
-        <item>pick up<tag>out="pick up";</tag></item>
-        <item>remove<tag>out="pick up";</tag></item>
-        </one-of>
-        <ruleref uri="#key" />
-    </rule>
-    <rule id="key">
-        <item repeat="0-1">
-            <one-of>
-                <item> the </item>
-                <item> a </item>
-            </one-of>
-        </item>
-        <one-of>
-        <item>key<tag>out="key";</tag></item>
-        </one-of>
-    </rule>
- 
-    <!-- All items used with actions -->
-<rule id="item">
-    <item repeat="0-1">
-        <one-of>
-            <item> the </item>
-            <item> a </item>
-        </one-of>
-    </item>
+<!-- GLOBAL EVENTS -->
+<rule id="help" scope="public">
     <one-of>
-        <item>door</item>
-        <item>drawer</item>
-        <item>window</item>
+        <item>help</item>
+        <item>help me</item>
+        <item>i don't know</item>
+        <item>where am i</item>
     </one-of>
-    out=rules.itemField;
+</rule>
+
+<rule id="look" scope="public"> 
+    <one-of>
+        <item>look</item>
+        <item>look at</item>
+        <item>look around</item>
+    </one-of>
+</rule>
+
+<rule id="inventory" scope="public">
+    <one-of>
+        <item>inventory</item>
+        <item>check inventory</item>
+        <item>open inventory</item>
+    </one-of>
+</rule>
+
+<!-- Actions -->
+<rule id="gameAction" scope="public">
+    <one-of>
+        <item>open<tag>out="open";</tag></item>
+        <item>close<tag>out="close";</tag></item>
+        <item>unlock<tag>out="unlock";</tag></item>
+        <item>pickup<tag>out="pick up";</tag></item>
+        <item>pick<tag>out="pick up";</tag></item>
+        <item>grab<tag>out="pick up";</tag></item>
+        <item>go<tag>out="go";</tag></item>
+    </one-of>
+</rule>
+
+<rule id="gameObject" scope="public">
+    <one-of>
+        <item>the door<tag>out="door";</tag></item>
+        <item>the drawer<tag>out="drawer";</tag></item>
+        <item>the window<tag>out="window";</tag></item>
+        <item>the key<tag>out="key";</tag></item>
+       
+    </one-of>
+</rule>
+<rule id="gameDirections" scope="public">
+    <one-of>
+        <item>go<tag>out="get";</tag></item>
+        <item>walk<tag>out="get";</tag></item>    
+        <item>get out<tag>out="get";</tag></item>      
+    </one-of>
+</rule>
+
+<rule id="gamePlaces" scope="public">
+    <one-of>
+        <item>outside<tag>out="outside";</tag></item>
+        <item>out<tag>out="outside";</tag></item>    
+        <item>get out<tag>out="outside";</tag></item>      
+    </one-of>
+</rule>
+
+<!-- Main rule. Add combinations to things here. -->
+<rule id="maingame" scope="public">
+    <one-of>
+        <item>
+        <ruleref uri="#gameAction" />
+        <ruleref uri="#gameObject" />
+        <tag>out.action=rules.gameAction; out.object=rules.gameObject</tag>      
+        </item>
+
+    </one-of>
+</rule>
+
+<rule id="moving" scope="public">
+    <one-of>
+        <item>
+        <ruleref uri="#gameDirections" />
+        <ruleref uri="#gamePlaces" />
+        <tag>out.action=rules.gameDirections; out.object=rules.gamePlaces</tag>      
+        </item>
+
+    </one-of>
 </rule>
 
 

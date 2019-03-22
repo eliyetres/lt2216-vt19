@@ -42,9 +42,7 @@
     <form id="askTo">
         <field name="toField">
             <prompt bargein="false">
-                <break time="1500" />Where are you travelling to?
-            
-            
+            <break time="1500" />Where are you travelling to?
             </prompt>
             <noinput>The options are: London, Paris or New York.<reprompt />
             </noinput>
@@ -154,9 +152,7 @@
     <!-- Ask to confirm flight return ticket-->
     <form id="askConfirmTwo">
         <field name="confirmTwoField">
-            <prompt>Do you want to travel from  <value expr="from" />on <value expr="leavedate" />to<value expr="to" />, returning on<value expr="returndate" />?            
-        
-            
+            <prompt>Do you want to travel from  <value expr="from" />on <value expr="leavedate" />to<value expr="to" />, returning on<value expr="returndate" />?
             </prompt>
             <option>yes</option>
             <option>no</option>
