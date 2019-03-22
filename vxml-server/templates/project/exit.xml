@@ -3,7 +3,7 @@
     <!-- Project for Dialogue Systems -->
     <form id="goodbye">
         <block>         
-                Goodbye and thanks for playing! 
+            Goodbye and thanks for playing! 
         </block>
     </form>
 </vxml>

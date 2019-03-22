@@ -7,7 +7,17 @@
         <item>help</item>
         <item>help me</item>
         <item>i don't know</item>
+        <item>i don't know what to do</item>
         <item>where am i</item>
+        <item>what do i do</item>
+    </one-of>
+</rule>
+
+<rule id="restart" scope="public">
+    <one-of>
+        <item>restart game</item>
+        <item>resit game</item>
+        <item>start over</item>
     </one-of>
 </rule>
 
@@ -40,15 +50,24 @@
     </one-of>
 </rule>
 
+<rule id="gamePickup" scope="public">
+    <one-of>
+        <item>pickup<tag>out="pick up";</tag></item>
+        <item>pick<tag>out="pick up";</tag></item>
+        <item>grab<tag>out="pick up";</tag></item>
+        <item>go<tag>out="go";</tag></item>
+    </one-of>
+</rule>
+
 <rule id="gameObject" scope="public">
     <one-of>
         <item>the door<tag>out="door";</tag></item>
         <item>the drawer<tag>out="drawer";</tag></item>
-        <item>the window<tag>out="window";</tag></item>
-        <item>the key<tag>out="key";</tag></item>
-       
+        <item>the window<tag>out="window";</tag></item>  
+        <item>the key<tag>out="key";</tag></item>   
     </one-of>
 </rule>
+
 <rule id="gameDirections" scope="public">
     <one-of>
         <item>go<tag>out="get";</tag></item>
@@ -71,9 +90,8 @@
         <item>
         <ruleref uri="#gameAction" />
         <ruleref uri="#gameObject" />
-        <tag>out.action=rules.gameAction; out.object=rules.gameObject</tag>      
+        <tag>out.action=rules.gameAction; out.object=rules.gameObject</tag>    
         </item>
-
     </one-of>
 </rule>
 
@@ -82,11 +100,12 @@
         <item>
         <ruleref uri="#gameDirections" />
         <ruleref uri="#gamePlaces" />
-        <tag>out.action=rules.gameDirections; out.object=rules.gamePlaces</tag>      
+        <tag>out.action=rules.gameDirections; out.object=rules.gamePlaces</tag>
         </item>
-
     </one-of>
 </rule>
+
+
 
 
 </grammar>
