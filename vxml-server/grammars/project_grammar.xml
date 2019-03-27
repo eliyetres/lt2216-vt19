@@ -30,12 +30,6 @@
     </one-of>
 </rule>
 
-
-<rule id="lookAt" scope="public"> 
-        <item>look at</item>
-</rule>
-
-
 <rule id="inventory" scope="public">
     <one-of>
         <item>inventory</item>
@@ -91,11 +85,6 @@
         <ruleref uri="#gameAction" />
         <ruleref uri="#gameObject" />
         <tag>out.action=rules.gameAction; out.object=rules.gameObject</tag>    
-        </item>
-        <item>
-        <ruleref uri="#lookAt" />
-        <ruleref uri="#gameObject" />
-        <tag>out.action=rules.lookAt; out.object=rules.gameObject</tag>    
         </item>
     </one-of>
 </rule>
