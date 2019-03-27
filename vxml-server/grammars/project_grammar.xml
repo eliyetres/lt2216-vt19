@@ -16,23 +16,31 @@
 <rule id="restart" scope="public">
     <one-of>
         <item>restart game</item>
-        <item>resit game</item>
+        <item>restart the game</item>
+        <item>restart</item>
         <item>start over</item>
     </one-of>
 </rule>
 
 <rule id="look" scope="public"> 
     <one-of>
-        <item>look</item>
-        <item>look at</item>
         <item>look around</item>
+        <item>room information</item>
+        <item>room info</item>
     </one-of>
 </rule>
+
+
+<rule id="lookAt" scope="public"> 
+        <item>look at</item>
+</rule>
+
 
 <rule id="inventory" scope="public">
     <one-of>
         <item>inventory</item>
         <item>check inventory</item>
+        <item>check my inventory</item>
         <item>open inventory</item>
     </one-of>
 </rule>
@@ -50,14 +58,6 @@
     </one-of>
 </rule>
 
-<rule id="gamePickup" scope="public">
-    <one-of>
-        <item>pickup<tag>out="pick up";</tag></item>
-        <item>pick<tag>out="pick up";</tag></item>
-        <item>grab<tag>out="pick up";</tag></item>
-        <item>go<tag>out="go";</tag></item>
-    </one-of>
-</rule>
 
 <rule id="gameObject" scope="public">
     <one-of>
@@ -91,6 +91,11 @@
         <ruleref uri="#gameAction" />
         <ruleref uri="#gameObject" />
         <tag>out.action=rules.gameAction; out.object=rules.gameObject</tag>    
+        </item>
+        <item>
+        <ruleref uri="#lookAt" />
+        <ruleref uri="#gameObject" />
+        <tag>out.action=rules.lookAt; out.object=rules.gameObject</tag>    
         </item>
     </one-of>
 </rule>

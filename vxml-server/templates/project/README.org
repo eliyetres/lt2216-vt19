@@ -3,4 +3,15 @@
 export FLASK_APP=app.py
 export FLASK_ENV=development
 flask run --port 8071
+
+* Instructions for using the game
+
+The start menu gives the options: start or quit the game.
+When the game starts, there is a very short intuintroduction block. This was done intentionally, I wanted the user to figure out what to do.
+
+There are global events connected to rules that the user can say anytime troughout the game like "help", "open inventory", and "look around". The hint at the start of the game only gives the user the "help" command and there are more detailed help descriptions if you ask for help multiple times.
+
+The "look around" gives information about the items and their states in the game, e.g. "the door is locked". If the door is unlocked it will change to say it's closed.
 #+END_SRC
+
+

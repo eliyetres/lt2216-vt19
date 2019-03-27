@@ -4,17 +4,20 @@
         That doesn't work.
         <reprompt />
     </nomatch>
-    <noinput>
+    <noinput count="2">
         I'm not sure what to do.  Tell me <emphasis>again</emphasis>. <break size="small"/>
         <reprompt />
-    </noinput>    
+    </noinput> 
+    <noinput count="1">
+         I'm sorry. I didn't hear that.
+         <reprompt/>
+      </noinput>
     <!-- Data model -->
     <var name="door" />
     <var name="drawer" />
     <var name="table" />
     <var name="window" />
-    <var name="key" />
-    <var name="selected_item" /> 
+    <var name="key" /> 
 
 <!-- Global commands  -->
 <link event="help">
@@ -35,15 +38,15 @@
         <reprompt />
     </help>
     <help count="2">
-    You can tell me to check my inventory.
+    You can <emphasis>tell me</emphasis> to check my inventory.
 </help>
 <help count="3">
-    Try giving me commands combining actions with the items in the room, like: "open the door".
+    Try giving me commands using actions with the items in the room, like: "open the door".
 </help>
 
 <form id="restart">
     <block>
-        Restarting game.
+        Resetting game.
         <goto next="#intro"/> 
     </block>    
 </form>
@@ -87,12 +90,13 @@
     <assign name="drawer" expr="'closed'" />
     <assign name="window" expr="'locked'" />  
 </block>
-   <block>I'm inside a room. <break/> I need to figure out how to get <emphasis>out of here</emphasis>. If you tell me to look around I'll tell you what I see. I can also check my inventory and use the items inside.
+   <block>I'm inside a room. <break/> I need to figure out how to get <emphasis>out of here</emphasis>. You can say "help" or "I don't know what to do" anytime for hints.
    <break size="small"/> 
    <goto next="#maingame"/>   
    </block>  
    
 </form>
+
 
 <!-- INTRODUCTION -->
 <form id="maingame">
@@ -105,12 +109,11 @@
 <!-- PART 1 -->
 <field name="open_drawer">
     <grammar src="grammars/project_grammar.xml" />
-     <prompt timeout="120s">  <break/> </prompt>    
+     <prompt timeout="30s">  <break/> </prompt>    
        <filled>
            <if cond="open_drawer$.interpretation.action == 'open' &amp;&amp; open_drawer$.interpretation.object == 'drawer'">                
                 <prompt bargein="false">  Ok, I'll open the drawer.</prompt>
                 <assign name="drawer" expr="'open'" /> 
-
             <elseif cond="open_drawer$.interpretation.action == 'open' &amp;&amp; open_drawer$.interpretation.object == 'door'"/>
                 <prompt bargein="false">I can't <value expr="open_drawer$.interpretation.action" /> the  <value expr="open_drawer$.interpretation.object" />, it's <value expr="door" /></prompt>
                 <goto next="#maingame"/>  
@@ -123,24 +126,24 @@
       </field> 
       <!-- PART 2 -->
       <field name="get_key">   
-          <prompt timeout="120s">  <break/> </prompt>    
+          <prompt timeout="30s">  <break/> </prompt>    
           <grammar src="grammars/project_grammar.xml" />      
           <filled>                
             <if cond="get_key$.interpretation.action == 'pick up' &amp;&amp; get_key$.interpretation.object == 'key'">  
-                <prompt>I've picked up the key.</prompt>
+                <prompt bargein="false">I've picked up the key.</prompt>
                 <assign name="key" expr="true" />
             <elseif cond="get_key$.interpretation.action == 'open' &amp;&amp; get_key$.interpretation.object == 'door'"/>
             <prompt>I can't <value expr="get_key$.interpretation.action" /> the  <value expr="get_key$.interpretation.object" />, it's <value expr="door" /></prompt>
             <goto next="#maingame"/>  
             <else />
-                <prompt>I tried to <value expr="get_key$.interpretation.action" /> the <value expr="get_key$.interpretation.object" /> like you told be but it didn't work.</prompt>
+                <prompt bargein="false">I tried to <value expr="get_key$.interpretation.action" /> the <value expr="get_key$.interpretation.object" /> like you told be but it didn't work.</prompt>
                 <goto next="#maingame"/>  
             </if>
             </filled>
           </field>
            <!-- PART 3 -->
         <field name="has_key">
-           <prompt timeout="120s">  <break/> </prompt>  
+           <prompt timeout="30s">  <break/> </prompt>  
            <grammar src="grammars/project_grammar.xml" />   
            <filled>
         <if cond="has_key$.interpretation.action == 'unlock' &amp;&amp; has_key$.interpretation.object == 'door'">  
@@ -155,7 +158,7 @@
 
         <!-- PART 4 -->
         <field name="door_unlocked">
-           <prompt timeout="120s">  <break/> </prompt>  
+           <prompt timeout="30s">  <break/> </prompt>  
            <grammar src="grammars/project_grammar.xml" />   
            <filled>
         <if cond="has_key$.interpretation.action == 'open' &amp;&amp; has_key$.interpretation.object == 'door'">  
@@ -171,11 +174,11 @@
 
         <!-- PART 5 -->
         <field name="door_open">
-           <prompt timeout="120s">  <break/> </prompt>  
+           <prompt timeout="30s"> <break/> </prompt>  
            <grammar src="grammars/project_grammar.xml#moving" />   
            <filled>
-        <if cond="has_key$.interpretation.action == 'get' &amp;&amp; has_key$.interpretation.object == 'outside'">  
-            <prompt>I walk out the door.</prompt>
+        <if cond="has_key$.interpretation.action == 'go' &amp;&amp; has_key$.interpretation.object == 'outside'">  
+            <prompt bargein="false">Ok, I'll walk out <emphasis>trough</emphasis> the door.<break/></prompt>
             <assign name="door" expr="'open'" />
             <goto next="#finished"/>  
         <else />
@@ -190,7 +193,7 @@
 </form>
 <form id="finished">
     <block>
-        You've finished exited the room and finished the game!
+        You have exited the room and finished the game! <break/>Congratulations!
     </block>
 </form>
 
